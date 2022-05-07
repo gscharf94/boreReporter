@@ -1,0 +1,18 @@
+extends layout.pug
+
+block style
+  link(rel="stylesheet", href="/stylesheets/viewJobs.css")
+
+block content
+  h1#usernameHeader Current User
+  button#logoutButton(onclick="logoutRedirect()") Logout
+  each job in jobs
+    div#jobContainer
+      h2 #{job.job_name}
+      ul#pageLinks
+        each page in job.pages
+          li
+           a(href=`../input/${job.job_name}/${page}`) SH#{page}
+
+block scripts
+  script(src="/scripts/viewJobs.js")

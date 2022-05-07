@@ -1,0 +1,115 @@
+html {
+  background-color: darkslategray;
+}
+
+#map {
+  margin: auto;
+  width: 95vw;
+  height: 65vh;
+  margin-bottom: 1vh;
+}
+
+#controls {
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  width: 100vw;
+}
+
+#vaultTypeLabel {
+  grid-column: 1;
+  grid-row: 2;
+  align-self: flex-end;
+  font-size: 3ch;
+  color: white;
+  font-weight: bold;
+  visibility: hidden;
+}
+
+#vaultType {
+  width: 130px;
+  font-size: 4ch;
+  grid-column: 1;
+  grid-row: 3;
+  background-color: gray;
+  font-weight: bold;
+  border: none;
+  height: 60px;
+  visibility: hidden;
+}
+
+button:active {
+  background-color: darkgray;
+}
+
+button {
+  width: 100%;
+  height: 5vh;
+  font-size: 2ch;
+  font-weight: bold;
+  background-color: gray;
+  border: none;
+  border-radius: 10px;
+}
+
+#undo {
+  grid-column: 3;
+  grid-row: 1;
+  color: lightgray;
+  display: flex;
+  justify-content: center;
+  justify-self: right;
+  align-items: center;
+}
+
+#footageInputLabel {
+  grid-column: 2;
+  grid-row: 2;
+  font-size: 3ch;
+  color: white;
+  font-weight: bold;
+  align-self: flex-end;
+}
+
+
+.footageStuff {
+  visibility: hidden;
+}
+
+#footageInput {
+  grid-column: 2;
+  grid-row: 3;
+  height: 5vh;
+  font-size: 2.5ch;
+  width: 50%;
+}
+
+
+#addBox {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+#addBore {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+#finish {
+  grid-column: 3;
+  grid-row: 2;
+  display: flex;
+  justify-content: center;
+  justify-self: right;
+  align-items: center;
+  margin-top: 30px;
+}
+
+#submit {
+  grid-column: 3;
+  grid-row: 3;
+  display: flex;
+  justify-content: center;
+  justify-self: right;
+  align-items: center;
+  margin-top: 30px;
+}

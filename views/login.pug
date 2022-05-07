@@ -1,0 +1,18 @@
+extends layout.pug
+
+block style
+  link(rel="stylesheet", href="/stylesheets/login.css")
+
+
+block content
+  div#formContainer
+    input#usernameInput(type="text", name="username")
+    label(for="username")#usernameLabel Username
+    input#passwordInput(type="password", name="password")
+    label#passwordLabel(for="password") Password
+    button#submit(onclick="checkCredentials()") Login
+
+block scripts
+  script.
+    crewsJSON="#{crewsJSON}"
+  script(src="/scripts/login.js")

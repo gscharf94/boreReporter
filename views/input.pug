@@ -1,0 +1,36 @@
+extends layout.pug
+
+block style
+  meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
+  link(rel="stylesheet", href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css", integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==", crossorigin="")
+  link(rel="stylesheet", href="/stylesheets/input.css")
+
+block content
+  div#map
+
+  div#controls
+    button(onclick="addVault()")#addBox Add Vault
+    button(onclick="addBore()")#addBore Add Bore
+    button(onclick="undoButton()")#undo Undo
+    button(onclick="finishPlacing()")#finish Finish
+    button(onclick="sendPost()")#submit Submit Daily
+
+
+    label(for="vaultType")#vaultTypeLabel.vaultStuff Vault Size
+    select(name="vaultType")#vaultType.vaultStuff
+      option(value=-1) ---
+      option(value=0) DT20
+      option(value=1) DT30
+      option(value=2) DT36
+
+    label#footageInputLabel.footageStuff Footage
+    input#footageInput.footageStuff(type="number", name="footage")
+
+
+block scripts
+  script.
+    jobName="#{jobName}"
+    pageId="#{pageId}"
+    savedBores="#{bores}"
+  script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js", integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==", crossorigin="")
+  script(src="/scripts/input.js")

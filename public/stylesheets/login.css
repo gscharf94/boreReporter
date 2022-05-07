@@ -1,0 +1,54 @@
+html {
+  background-color: lightgray;
+}
+
+#formContainer {
+  width: 50%;
+  display: grid;
+  margin: auto;
+  margin-top: 30vh;
+}
+
+label {
+  text-align: right;
+  margin-right: 2vw;
+  font-size: 3ch;
+  font-weight: bold;
+}
+
+input {
+  font-size: 3ch;
+  font-weight: bold;
+  margin-bottom: 2vh;
+}
+
+button {
+  font-size: 3ch;
+  font-weight: bold;
+}
+
+#usernameInput {
+  grid-row: 1;
+  grid-column: 2;
+}
+
+#usernameLabel {
+  grid-row: 1;
+  grid-column: 1;
+}
+
+#passwordInput {
+  grid-row: 2;
+  grid-column: 2;
+}
+
+#passwordLabel {
+  grid-row: 2;
+  grid-column: 1;
+}
+
+#submit {
+  grid-row: 3;
+  grid-column: 1 / span 2;
+  width: 100%;
+}

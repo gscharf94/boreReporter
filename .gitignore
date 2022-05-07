@@ -1,0 +1,8 @@
+.vscode/
+
+mapMaker/images/
+
+node_modules/
+
+public/images/
+public/prints/
