@@ -20,9 +20,22 @@ router.get('/:jobName/:pageId', (req, res, next) => {
       , (err, resp2) => {
 
         let bores = resp2.rows;
-        console.log(bores);
-
-        res.render('input', { jobs: jobs, jobName: jobName, pageId: pageId, bores: JSON.stringify(bores) });
+        pool.query(
+          `SELECT * FROM vaults
+          INNER JOIN pages on vaults.job_name=pages.job_name
+          WHERE pages.page_number=${pageId}
+          AND vaults.job_name='${jobName}';`
+          , (err, resp3) => {
+            let vaults = resp3.rows;
+            res.render('input',
+              {
+                jobs: jobs,
+                jobName: jobName,
+                pageId: pageId,
+                bores: JSON.stringify(bores),
+                vaults: JSON.stringify(vaults)
+              });
+          });
       });
   })
 });

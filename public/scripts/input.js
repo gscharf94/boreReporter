@@ -6,6 +6,7 @@ const crewName = document.cookie.split("=")[1];
 let addingBore = false;
 let addingVault = false;
 savedBores = parseJumbledJSON(savedBores);
+savedVaults = parseJumbledJSON(savedVaults);
 
 let map = L.map('map').setView([65, -46], 2);
 // let map = L.map('map').fitWorld();
@@ -25,17 +26,32 @@ let points = [];
 let currentLineMarkers = [];
 let currentLine = 0;
 let currentMarker = 0;
+
+let savedMarkers = [];
 let savedLines = [];
 
 let submittedMarkers = [];
 let submittedBores = [];
 
 drawSavedBores();
+drawSavedVaults();
 
 function drawSavedBores() {
   for (const bore of savedBores) {
+    console.log(bore);
     let line = L.polyline(bore.position, { color: "red", weight: 5 });
+    line.bindPopup(`FTG: ${bore.footage}ft CREW: ${bore.crew_name} DATE: ${bore.work_date}`);
     line.addTo(map);
+    savedLines.push(line);
+  }
+}
+
+function drawSavedVaults() {
+  for (const vault of savedVaults) {
+    let marker = L.marker(vault.position);
+    marker.bindPopup(`SIZE: ${vault.vault_size} CREW: ${vault.crew_name} DATE: ${vault.work_date}`);
+    marker.addTo(map);
+    savedMarkers.push(marker);
   }
 }
 
@@ -168,7 +184,6 @@ function finishPlacing() {
         pageId: pageId,
       };
       submittedBores.push(bore);
-      console.log(submittedBores);
       for (const marker of currentLineMarkers) {
         map.removeLayer(marker);
       }
@@ -218,7 +233,6 @@ function clickHandler(event) {
     lineMarker.addTo(map);
     currentLineMarkers.push(lineMarker);
     lineMarker.on('drag', (event) => {
-      console.log('this happens');
       updatePolyline();
     });
 
@@ -259,8 +273,6 @@ function undoButton() {
 
 
 function sendRequest(body) {
-  console.log('sendRequest');
-  console.log(body);
   let req = new XMLHttpRequest();
   req.open("POST", "http://192.168.86.36:3000/inputData");
   req.setRequestHeader("Content-Type", "application/json");
@@ -289,7 +301,6 @@ function sendPost() {
       crew: crewName,
       pageNumber: pageId,
     }
-    console.log(bore);
     sendRequest(postObj);
   }
 }
