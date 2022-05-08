@@ -5,6 +5,7 @@ clearInputs();
 const crewName = document.cookie.split("=")[1];
 let addingBore = false;
 let addingVault = false;
+let addingRock = false;
 savedBores = parseJumbledJSON(savedBores);
 savedVaults = parseJumbledJSON(savedVaults);
 
@@ -32,6 +33,7 @@ let savedLines = [];
 
 let submittedMarkers = [];
 let submittedBores = [];
+let submittedRock = [];
 
 drawSavedBores();
 drawSavedVaults();
@@ -109,25 +111,43 @@ function toggleInputVisibility(option) {
 }
 
 function addVault() {
-  if (addingVault || addingBore) {
+  if (addingVault || addingBore || addingRock) {
     return;
   }
   addingVault = true;
   addingBore = false;
+  addingRock = false;
   toggleInputVisibility(0);
 
   document.getElementById('addBore').style.color = "lightgray";
+  document.getElementById('addRock').style.color = "lightgray";
 }
 
 function addBore() {
-  if (addingBore || addingVault) {
+  if (addingBore || addingVault || addingRock) {
     return;
   }
   addingBore = true;
   addingVault = false;
+  addingRock = false;
   toggleInputVisibility(1);
 
   document.getElementById('addBox').style.color = "lightgray";
+  document.getElementById('addRock').style.color = "lightgray";
+}
+
+function addRock() {
+  if (addingBore || addingVault || addingRock) {
+    return;
+  }
+
+  addingRock = true;
+  addingBore = false;
+  addingVault = false;
+  toggleInputVisibility(1);
+
+  document.getElementById('addBox').style.color = "lightgray";
+  document.getElementById('addVault').style.color = "lightgray";
 }
 
 function finishPlacing() {
@@ -167,6 +187,15 @@ function finishPlacing() {
 
   if (currentLine != 0) {
     let footage = document.getElementById('footageInput').value;
+    let boreType = 0;
+    if (addingRock) {
+      boreType = 'rock';
+    } else if (addingBore) {
+      boreType = "regular";
+    } else {
+      console.log('problem');
+      return;
+    }
     if (isNaN(footage) || footage == "") {
       alert('Footage must be a number');
       return;
@@ -182,6 +211,7 @@ function finishPlacing() {
         footage: footage,
         jobName: jobName,
         pageId: pageId,
+        boreType: boreType,
       };
       submittedBores.push(bore);
       for (const marker of currentLineMarkers) {
@@ -205,7 +235,7 @@ function finishPlacing() {
   clearInputs();
 }
 
-function updatePolyline() {
+function updatePolyline(color, weight) {
   if (currentLine != 0) {
     map.removeLayer(currentLine);
   }
@@ -214,7 +244,7 @@ function updatePolyline() {
   for (const marker of currentLineMarkers) {
     points.push(marker.getLatLng());
   }
-  currentLine = L.polyline(points, { color: 'blue', weight: 7 });
+  currentLine = L.polyline(points, { color: color, weight: weight });
   currentLine.addTo(map);
 }
 
@@ -233,11 +263,23 @@ function clickHandler(event) {
     lineMarker.addTo(map);
     currentLineMarkers.push(lineMarker);
     lineMarker.on('drag', (event) => {
-      updatePolyline();
+      updatePolyline('blue', 7);
     });
 
     if (currentLineMarkers.length > 1) {
-      updatePolyline();
+      updatePolyline('blue', 7);
+    }
+  }
+  if (addingRock) {
+    let lineMarker = L.marker(position, { draggable: 'true' });
+    lineMarker.addTo(map);
+    currentLineMarkers.push(lineMarker);
+    lineMarker.on('drag', (event) => {
+      updatePolyline('yellow', 4);
+    });
+
+    if (currentLineMarkers.length > 1) {
+      updatePolyline('yellow', 4);
     }
   }
 }
@@ -260,9 +302,11 @@ function undoButton() {
 
   addingBore = false;
   addingVault = false;
+  addingRock = false;
 
   document.getElementById('addBox').style.color = "black";
   document.getElementById('addBore').style.color = "black";
+  document.getElementById('addRock').style.color = "black";
   document.getElementById('undo').style.color = "lightgray";
 
   document.getElementById('vaultTypeLabel').style.visibility = "hidden";
@@ -300,6 +344,7 @@ function sendPost() {
       jobName: jobName,
       crew: crewName,
       pageNumber: pageId,
+      boreType: bore.boreType,
     }
     sendRequest(postObj);
   }

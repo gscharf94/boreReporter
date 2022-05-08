@@ -2,8 +2,18 @@ const express = require('express');
 const router = express.Router();
 const { pool } = require('../db');
 
-function insertBore(points, footage, crew, job, pageId) {
-  let query = "INSERT INTO bores(footage, crew_name, job_name, page_id, position) VALUES ";
+function insertBore(points, footage, crew, job, pageId, boreType) {
+  let tableName = "";
+  console.log(boreType);
+  if (boreType == "rock") {
+    tableName = "rocks";
+  } else if (boreType == "regular") {
+    tableName = "bores";
+  } else {
+    console.log('problemo');
+    return;
+  }
+  let query = `INSERT INTO ${tableName}(footage, crew_name, job_name, page_id, position) VALUES `;
   query += `(${footage}, '${crew}', '${job}', ${pageId}, '{`;
   for (const point of points) {
     query += `{${point.lat}, ${point.lng}},`;
@@ -16,6 +26,7 @@ function insertBore(points, footage, crew, job, pageId) {
 
   pool.query(query);
 }
+
 
 function insertVault(size, crew, job, pageId, position) {
   let query = `INSERT INTO vaults(vault_size, crew_name, job_name, page_id, position) VALUES `;
@@ -38,7 +49,7 @@ router.post('/', (req, res, next) => {
   pool.query(`SELECT * FROM pages WHERE job_name='${data.jobName}' AND page_number=${data.pageNumber}`, (err, resp) => {
     let pageId = resp.rows[0].id;
     if (data.objType == "bore") {
-      insertBore(data.points, data.footage, data.crew, data.jobName, pageId);
+      insertBore(data.points, data.footage, data.crew, data.jobName, pageId, data.boreType);
     } else if (data.objType == "vault") {
       insertVault(data.size, data.crew, data.jobName, pageId, data.position);
     }
