@@ -8,6 +8,7 @@ let addingVault = false;
 let addingRock = false;
 savedBores = parseJumbledJSON(savedBores);
 savedVaults = parseJumbledJSON(savedVaults);
+savedRocks = parseJumbledJSON(savedRocks);
 
 let map = L.map('map').setView([65, -46], 2);
 // let map = L.map('map').fitWorld();
@@ -35,13 +36,44 @@ let submittedMarkers = [];
 let submittedBores = [];
 let submittedRock = [];
 
+let postedBores = [];
+let postedVaults = [];
+
+let trans = {
+  0: 'DT20',
+  1: 'DT30',
+  2: 'DT36',
+};
+
 drawSavedBores();
 drawSavedVaults();
+drawSavedRocks();
+
+function formatDate(dateStr) {
+  date = new Date(dateStr);
+  let day = date.getDate();
+  let month = date.getMonth() + 1;
+  let year = date.getFullYear();
+
+  return `${month}/${day}/${year}`;
+}
+
+function generateVaultPopupHTML(vault) {
+  let html = `
+    <div style="display: grid;width:150px;">
+      <h3 style="grid-column: 1;grid-row: 2;margin-top: 0;margin-bottom: 0;">${formatDate(vault.work_date)}</h2>
+      <h3 style="grid-column: 1;grid-row: 1;margin-top: 0;margin-bottom: 0;">${vault.crew_name}</h3>
+      <h3 style="grid-column: 1;grid-row: 3;margin-top: 0;margin-bottom: 0;">${trans[vault.vault_size]}</h3>
+      <a style="grid-column: 2;grid-row:1;margin: auto;text-align: right;" href="#"><img style="width:30%;" src="/images/icons/small_edit.png">Edit</a>
+      <a style="grid-column: 2;grid-row:3;margin: auto;text-align: right;" href="#"><img style="width:30%;" src="/images/icons/small_delete.png">Delete</a>
+    </div>
+  `
+  return html;
+}
 
 function drawSavedBores() {
   for (const bore of savedBores) {
-    console.log(bore);
-    let line = L.polyline(bore.position, { color: "red", weight: 5 });
+    let line = L.polyline(bore.position, { color: "red", weight: 7 });
     line.bindPopup(`FTG: ${bore.footage}ft CREW: ${bore.crew_name} DATE: ${bore.work_date}`);
     line.addTo(map);
     savedLines.push(line);
@@ -51,9 +83,19 @@ function drawSavedBores() {
 function drawSavedVaults() {
   for (const vault of savedVaults) {
     let marker = L.marker(vault.position);
-    marker.bindPopup(`SIZE: ${vault.vault_size} CREW: ${vault.crew_name} DATE: ${vault.work_date}`);
+    // marker.bindPopup(`SIZE: ${vault.vault_size} CREW: ${vault.crew_name} DATE: ${vault.work_date}`);
+    marker.bindPopup(generateVaultPopupHTML(vault));
     marker.addTo(map);
     savedMarkers.push(marker);
+  }
+}
+
+function drawSavedRocks() {
+  for (const bore of savedRocks) {
+    let line = L.polyline(bore.position, { color: "pink", weight: 4, dashArray: "8 8" });
+    line.bindPopup(`FTG: ${bore.footage}ft CREW: ${bore.crew_name} DATE: ${bore.work_date}`);
+    line.addTo(map);
+    savedLines.push(line);
   }
 }
 
@@ -147,7 +189,7 @@ function addRock() {
   toggleInputVisibility(1);
 
   document.getElementById('addBox').style.color = "lightgray";
-  document.getElementById('addVault').style.color = "lightgray";
+  document.getElementById('addBore').style.color = "lightgray";
 }
 
 function finishPlacing() {
@@ -158,11 +200,6 @@ function finishPlacing() {
       return;
     }
 
-    let trans = {
-      0: 'DT20',
-      1: 'DT30',
-      2: 'DT36',
-    };
 
 
     if (confirm(`Confirm placing ${trans[typeOfBox]}?`)) {
@@ -222,11 +259,13 @@ function finishPlacing() {
 
       addingBore = false;
       addingVault = false;
+      addingRock = false;
 
       toggleInputVisibility(1);
 
       document.getElementById('addBox').style.color = "black";
       document.getElementById('addBore').style.color = "black";
+      document.getElementById('addRock').style.color = "black";
       document.getElementById('undo').style.color = "lightgray";
     }
   }
@@ -235,7 +274,7 @@ function finishPlacing() {
   clearInputs();
 }
 
-function updatePolyline(color, weight) {
+function updatePolyline(color, weight, dashArray) {
   if (currentLine != 0) {
     map.removeLayer(currentLine);
   }
@@ -244,7 +283,7 @@ function updatePolyline(color, weight) {
   for (const marker of currentLineMarkers) {
     points.push(marker.getLatLng());
   }
-  currentLine = L.polyline(points, { color: color, weight: weight });
+  currentLine = L.polyline(points, { color: color, weight: weight, dashArray: dashArray });
   currentLine.addTo(map);
 }
 
@@ -263,11 +302,11 @@ function clickHandler(event) {
     lineMarker.addTo(map);
     currentLineMarkers.push(lineMarker);
     lineMarker.on('drag', (event) => {
-      updatePolyline('blue', 7);
+      updatePolyline('blue', 7, "");
     });
 
     if (currentLineMarkers.length > 1) {
-      updatePolyline('blue', 7);
+      updatePolyline('blue', 7, "");
     }
   }
   if (addingRock) {
@@ -275,11 +314,11 @@ function clickHandler(event) {
     lineMarker.addTo(map);
     currentLineMarkers.push(lineMarker);
     lineMarker.on('drag', (event) => {
-      updatePolyline('yellow', 4);
+      updatePolyline('green', 4, "8 8");
     });
 
     if (currentLineMarkers.length > 1) {
-      updatePolyline('yellow', 4);
+      updatePolyline('green', 4, "8 8");
     }
   }
 }
@@ -334,6 +373,7 @@ function sendPost() {
       pageNumber: pageId,
     };
     sendRequest(postObj);
+    postedVaults.push(vault);
   }
 
   for (const bore of submittedBores) {
@@ -347,7 +387,11 @@ function sendPost() {
       boreType: bore.boreType,
     }
     sendRequest(postObj);
+    postedBores.push(bore);
   }
+
+  submittedMarkers = [];
+  submittedBores = [];
 }
 
 

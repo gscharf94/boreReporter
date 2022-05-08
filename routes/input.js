@@ -27,13 +27,23 @@ router.get('/:jobName/:pageId', (req, res, next) => {
           AND vaults.job_name='${jobName}';`
           , (err, resp3) => {
             let vaults = resp3.rows;
-            res.render('input',
-              {
-                jobs: jobs,
-                jobName: jobName,
-                pageId: pageId,
-                bores: JSON.stringify(bores),
-                vaults: JSON.stringify(vaults)
+
+            pool.query(
+              `SELECT * FROM rocks
+              INNER JOIN pages ON rocks.job_name=pages.job_name
+              WHERE pages.page_number=${pageId}
+              AND rocks.job_name='${jobName}';`
+              , (err, resp4) => {
+                let rocks = resp4.rows;
+                res.render('input',
+                  {
+                    jobs: jobs,
+                    jobName: jobName,
+                    pageId: pageId,
+                    bores: JSON.stringify(bores),
+                    vaults: JSON.stringify(vaults),
+                    rocks: JSON.stringify(rocks),
+                  });
               });
           });
       });
