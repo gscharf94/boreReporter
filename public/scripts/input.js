@@ -2,7 +2,10 @@ setInputsHidden();
 clearInputs();
 
 
-const crewName = document.cookie.split("=")[1];
+let crewName = document.cookie.split("=")[1];
+checkLogin();
+
+
 let addingBore = false;
 let addingVault = false;
 let addingRock = false;
@@ -21,6 +24,38 @@ L.tileLayer('http://192.168.86.36:3000/images/{job}/{page}/{z}/{x}/{y}.jpg', {
   tileSize: 256,
   noWrap: true,
 }).addTo(map);
+
+let dt20Icon = L.icon({
+  iconUrl: "/images/icons/DT20.png",
+  iconSize: [12, 12],
+  iconAnchor: [6, 6],
+});
+
+let dt30Icon = L.icon({
+  iconUrl: "/images/icons/DT30.png",
+  iconSize: [12, 12],
+  iconAnchor: [6, 6],
+});
+
+let dt36Icon = L.icon({
+  iconUrl: "/images/icons/DT36.png",
+  iconSize: [12, 12],
+  iconAnchor: [6, 6],
+});
+
+let questionIcon = L.icon({
+  iconUrl: "/images/icons/question.png",
+  iconSize: [12, 12],
+  iconAnchor: [6, 6],
+});
+
+let xIcon = L.icon({
+  iconUrl: "/images/icons/x.png",
+  iconSize: [20, 20],
+  iconAnchor: [10, 10],
+});
+
+let iconList = [dt20Icon, dt30Icon, dt36Icon, questionIcon, xIcon];
 
 let currentBore = 0;
 
@@ -45,9 +80,22 @@ let trans = {
   2: 'DT36',
 };
 
+let iconTrans = {
+  0: dt20Icon,
+  1: dt30Icon,
+  2: dt36Icon,
+};
+
 drawSavedBores();
 drawSavedVaults();
 drawSavedRocks();
+
+function checkLogin() {
+  if (crewName == undefined) {
+    alert('you are logged out, please log back in');
+    window.location.href = "http://192.168.86.36:3000";
+  }
+}
 
 function formatDate(dateStr) {
   date = new Date(dateStr);
@@ -58,15 +106,89 @@ function formatDate(dateStr) {
   return `${month}/${day}/${year}`;
 }
 
-function generateVaultPopupHTML(vault) {
+function deleteSavedVault(id) {
+  console.log(`delete saved vault id: ${id}`);
+  console.log('current marker');
+  console.log(currentMarker);
+  console.log('savedMarkers');
+  console.log(savedMarkers);
+  console.log('savedVaults');
+  console.log(savedVaults);
+  console.log('postedVaults');
+  console.log(postedVaults);
+  console.log('submittedMarkers');
+  console.log(submittedMarkers);
+}
+
+function deleteVault(workDate, crewName, vaultSize, position) {
+  console.log(workDate);
+  console.log(crewName);
+  console.log(vaultSize);
+  console.log(position);
+
+  console.log('current marker');
+  console.log(currentMarker);
+  console.log('savedMarkers');
+  console.log(savedMarkers);
+  console.log('savedVaults');
+  console.log(savedVaults);
+  console.log('postedVaults');
+  console.log(postedVaults);
+  console.log('submittedMarkers');
+  console.log(submittedMarkers);
+
+  for (const layer in map._layers) {
+    console.log(map._layers[layer]);
+    if (map._layers[layer]._icon) {
+      console.log('^ marker');
+    } else if (map._layers[layer]._path) {
+      console.log('^ bore');
+    } else {
+      console.log('something else ^');
+    }
+  }
+
+
+  // let tmpList = [];
+  // let foundSubmitted = false;
+  // for (const marker of submittedMarkers) {
+
+  // }
+
+}
+
+function generateVaultPopupHTML(workDate, crewName, vaultSize, submitted, vaultId, position) {
+  let deleteArgs = "";
+  if (vaultId !== -1) {
+    deleteArgs = `deleteSavedVault(${vaultId})`;
+  } else {
+    deleteArgs = `deleteVault('${workDate}', '${crewName}', '${vaultSize}', '${position}')`;
+  }
+
   let html = `
     <div style="display: grid;width:150px;">
-      <h3 style="grid-column: 1;grid-row: 2;margin-top: 0;margin-bottom: 0;">${formatDate(vault.work_date)}</h2>
-      <h3 style="grid-column: 1;grid-row: 1;margin-top: 0;margin-bottom: 0;">${vault.crew_name}</h3>
-      <h3 style="grid-column: 1;grid-row: 3;margin-top: 0;margin-bottom: 0;">${trans[vault.vault_size]}</h3>
-      <a style="grid-column: 2;grid-row:1;margin: auto;text-align: right;" href="#"><img style="width:30%;" src="/images/icons/small_edit.png">Edit</a>
-      <a style="grid-column: 2;grid-row:3;margin: auto;text-align: right;" href="#"><img style="width:30%;" src="/images/icons/small_delete.png">Delete</a>
+      <h3 style="grid-column: 1;grid-row: 1;margin-top: 0;margin-bottom: 0;align-self: center;">${crewName}</h3>
+      <h3 style="grid-column: 1;grid-row: 2;margin-top: 0;margin-bottom: 0;align-self: center;">${formatDate(workDate)}</h3>
+      <h3 style="grid-column: 1;grid-row: 3;margin-top: 0;margin-bottom: 0;align-self: center;">${trans[vaultSize]}</h3>
+      <a style="grid-column: 2;grid-row:1;margin: auto;text-align: right;" href="#"><img style="width:30%;align-self: center;" src="/images/icons/small_edit.png">Edit</a>
+      <a onclick="${deleteArgs}" style="grid-column: 2;grid-row:3;margin: auto;text-align: right;" href="#"><img style="width:30%;align-self: center;" src="/images/icons/small_delete.png" >Delete</a>
     </div>
+    ${(submitted) ? '<h3 style="text-align: center;">Submitted ✅</h3>' : '<h3 style="text-align: center;">Pending ❌</h3>'}
+  `
+  return html;
+}
+
+function generateBorePopupHTML(workDate, crewName, footage, submitted, rock) {
+  let html = `
+    <div style="display: grid; width:150px;">
+      <h3 style="grid-column: 1; grid-row: 1;margin-top: 0;margin-bottom: 0;align-self: center;">${crewName}</h3>
+      <h3 style="grid-column: 1; grid-row: 2;margin-top: 0;margin-bottom: 0;align-self: center;">${formatDate(workDate)}</h3>
+      <h3 style="grid-column: 1; grid-row: 3;margin-top: 0;margin-bottom: 0;align-self: center;">${footage}ft</h3>
+      <h3 style="grid-column: 1; grid-row: 4;margin-top: 0;margin-bottom: 0;align-self: center;">${(rock) ? "ROCK" : ""}</h3>
+      <a style="grid-column: 2;grid-row:1;margin: auto;text-align: right;" href="#"><img style="width:30%;align-self: center;" src="/images/icons/small_edit.png">Edit</a>
+      <a style="grid-column: 2;grid-row:3;margin: auto;text-align: right;" href="#"><img style="width:30%;align-self: center;" src="/images/icons/small_delete.png">Delete</a>
+    </div>
+    ${(submitted) ? '<h3 style="text-align: center;">Submitted ✅</h3>' : '<h3 style="text-align: center;">Pending ❌</h3>'}
   `
   return html;
 }
@@ -74,7 +196,7 @@ function generateVaultPopupHTML(vault) {
 function drawSavedBores() {
   for (const bore of savedBores) {
     let line = L.polyline(bore.position, { color: "red", weight: 7 });
-    line.bindPopup(`FTG: ${bore.footage}ft CREW: ${bore.crew_name} DATE: ${bore.work_date}`);
+    line.bindPopup(generateBorePopupHTML(bore.work_date, bore.crew_name, bore.footage, true, false));
     line.addTo(map);
     savedLines.push(line);
   }
@@ -82,9 +204,9 @@ function drawSavedBores() {
 
 function drawSavedVaults() {
   for (const vault of savedVaults) {
-    let marker = L.marker(vault.position);
+    let marker = L.marker(vault.position, { icon: iconTrans[vault.vault_size] });
     // marker.bindPopup(`SIZE: ${vault.vault_size} CREW: ${vault.crew_name} DATE: ${vault.work_date}`);
-    marker.bindPopup(generateVaultPopupHTML(vault));
+    marker.bindPopup(generateVaultPopupHTML(vault.work_date, vault.crew_name, vault.vault_size, true, vault.id, -1));
     marker.addTo(map);
     savedMarkers.push(marker);
   }
@@ -93,7 +215,7 @@ function drawSavedVaults() {
 function drawSavedRocks() {
   for (const bore of savedRocks) {
     let line = L.polyline(bore.position, { color: "pink", weight: 4, dashArray: "8 8" });
-    line.bindPopup(`FTG: ${bore.footage}ft CREW: ${bore.crew_name} DATE: ${bore.work_date}`);
+    line.bindPopup(generateBorePopupHTML(bore.work_date, bore.crew_name, bore.footage, true, true));
     line.addTo(map);
     savedLines.push(line);
   }
@@ -193,6 +315,7 @@ function addRock() {
 }
 
 function finishPlacing() {
+  checkLogin();
   if (currentMarker != 0) {
     let typeOfBox = document.getElementById('vaultType').value;
     if (typeOfBox == -1) {
@@ -204,10 +327,13 @@ function finishPlacing() {
 
     if (confirm(`Confirm placing ${trans[typeOfBox]}?`)) {
       currentMarker.dragging.disable();
+      currentMarker.setIcon(iconTrans[typeOfBox]);
       let vault = {
         position: currentMarker.getLatLng(),
         size: trans[typeOfBox],
       };
+      let pos = [vault.position.lat, vault.position.lng];
+      currentMarker.bindPopup(generateVaultPopupHTML(new Date(), crewName, typeOfBox, false, -1, pos));
       submittedMarkers.push(vault);
       currentMarker = 0;
 
@@ -238,7 +364,7 @@ function finishPlacing() {
       return;
     }
 
-    if (confirm(`Confirm placing ${footage}ft bore?`)) {
+    if (confirm(`Confirm placing ${footage}ft bore? ${(addingRock) ? "ROCK" : ""}`)) {
       let linePoints = [];
       for (const marker of currentLineMarkers) {
         linePoints.push(marker.getLatLng());
@@ -254,6 +380,9 @@ function finishPlacing() {
       for (const marker of currentLineMarkers) {
         map.removeLayer(marker);
       }
+
+      currentLine.bindPopup(generateBorePopupHTML(new Date(), crewName, footage, false, (addingRock) ? true : false));
+
       currentLine = 0;
       currentLineMarkers = [];
 
@@ -290,7 +419,7 @@ function updatePolyline(color, weight, dashArray) {
 function clickHandler(event) {
   let position = map.mouseEventToLatLng(event.originalEvent);
   if (addingVault) {
-    currentMarker = L.marker(position, { draggable: 'true' });
+    currentMarker = L.marker(position, { draggable: 'true', icon: questionIcon });
     currentMarker.addTo(map);
     addingVault = false;
 
@@ -298,7 +427,7 @@ function clickHandler(event) {
     document.getElementById('undo').style.color = "black";
   }
   if (addingBore) {
-    let lineMarker = L.marker(position, { draggable: 'true' });
+    let lineMarker = L.marker(position, { draggable: 'true', icon: xIcon });
     lineMarker.addTo(map);
     currentLineMarkers.push(lineMarker);
     lineMarker.on('drag', (event) => {
@@ -310,7 +439,7 @@ function clickHandler(event) {
     }
   }
   if (addingRock) {
-    let lineMarker = L.marker(position, { draggable: 'true' });
+    let lineMarker = L.marker(position, { draggable: 'true', icon: xIcon });
     lineMarker.addTo(map);
     currentLineMarkers.push(lineMarker);
     lineMarker.on('drag', (event) => {
@@ -394,5 +523,25 @@ function sendPost() {
   submittedBores = [];
 }
 
+// map.on('zoomend', () => {
+//   let zoomLevel = map.getZoom();
+//   console.log(`zoomlevel: ${zoomLevel}`);
+//   if (zoomLevel == 5 || zoomLevel == 6) {
+//     console.log('this happens..');
+//     dt20Icon.options.iconSize = [25, 25];
+//     dt20Icon.options.iconAnchor = [12, 12];
+//   }
+//   if (zoomLevel == 3 || zoomLevel == 4) {
+//     dt20Icon.options.iconSize = [12, 12];
+//     dt20Icon.options.iconAnchor = [6, 6];
+//   }
 
+//   if (zoomLevel == 7) {
+//     dt20Icon.options.iconSize = [60, 60];
+//     dt20Icon.options.iconAnchor = [30, 30];
+//   }
+//   for (const marker of savedMarkers) {
+//     marker.setIcon(dt20Icon);
+//   }
+// });
 map.on('click', (event) => clickHandler(event));
