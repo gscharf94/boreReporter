@@ -128,6 +128,73 @@ function deleteSavedVault(id) {
   sendRequest(obj, "deleteData");
 }
 
+function deleteBore(workDate, crewName, footage, points, rock) {
+  points = points.split(",").map((val) => { return parseFloat(val); });
+  let parsedPoints = [];
+  for (let i = 0; i < points.length; i += 2) {
+    let pos = [points[i], points[i + 1]];
+    parsedPoints.push(pos);
+  }
+
+  let tmpArray = [];
+
+  for (const bore of postedBores) {
+    if (bore.points.length == parsedPoints.length) {
+      let equal = true;
+      for (let i = 0; i < parsedPoints.length; i++) {
+        console.log(`comparing ${bore.points[i]} v ${parsedPoints[i]}`);
+        if (bore.points[i][0] !== parsedPoints[i][0] || bore.points[i][1] !== parsedPoints[i][1]) {
+          equal = false;
+          break;
+        }
+      }
+      if (equal) {
+        map.removeLayer(bore.line);
+      } else {
+        tmpArray.push(bore);
+      }
+    }
+  }
+
+  postedBores = tmpArray;
+
+  let obj = {
+    workDate: workDate,
+    crewName: crewName,
+    footage: footage,
+    points: parsedPoints,
+    jobName: jobName,
+    pageNumber: pageId,
+    rock: rock,
+    id: -1,
+  }
+
+  let reqObj = { ...obj };
+  sendRequest(reqObj, "deleteData");
+}
+
+function deleteSavedBore(id, rock) {
+
+  let tmpArray = [];
+  for (const bore of savedBores) {
+    if (id == bore.id) {
+      map.removeLayer(bore.line);
+    } else {
+      tmpArray.push(bore);
+    }
+  }
+
+  savedBores = tmpArray;
+  let obj = {
+    type: "bore",
+    id: id,
+    rock: rock,
+  }
+
+  let reqObj = { ...obj }
+  sendRequest(reqObj, "deleteData");
+}
+
 function deleteVault(workDate, crewName, vaultSize, position) {
   // if (!confirm('Are you sure you want to delete the vault?')) {
   //   return;
@@ -179,7 +246,13 @@ function generateVaultPopupHTML(workDate, crewName, vaultSize, vaultId, position
   return html;
 }
 
-function generateBorePopupHTML(workDate, crewName, footage, rock) {
+function generateBorePopupHTML(workDate, crewName, footage, rock, boreId, points) {
+  let deleteArgs = "";
+  if (boreId !== -1) {
+    deleteArgs = `deleteSavedBore(${boreId}, ${rock})`;
+  } else {
+    deleteArgs = `deleteBore('${workDate}', '${crewName}', '${footage}', '${points}', ${rock})`
+  }
   let html = `
     <div style="display: grid; width:150px;">
       <h3 style="grid-column: 1; grid-row: 1;margin-top: 0;margin-bottom: 0;align-self: center;">${crewName}</h3>
@@ -187,7 +260,7 @@ function generateBorePopupHTML(workDate, crewName, footage, rock) {
       <h3 style="grid-column: 1; grid-row: 3;margin-top: 0;margin-bottom: 0;align-self: center;">${footage}ft</h3>
       <h3 style="grid-column: 1; grid-row: 4;margin-top: 0;margin-bottom: 0;align-self: center;">${(rock) ? "ROCK" : ""}</h3>
       <a style="grid-column: 2;grid-row:1;margin: auto;text-align: right;" href="#"><img style="width:30%;align-self: center;" src="/images/icons/small_edit.png">Edit</a>
-      <a style="grid-column: 2;grid-row:3;margin: auto;text-align: right;" href="#"><img style="width:30%;align-self: center;" src="/images/icons/small_delete.png">Delete</a>
+      <a onclick="${deleteArgs}" style="grid-column: 2;grid-row:3;margin: auto;text-align: right;" href="#"><img style="width:30%;align-self: center;" src="/images/icons/small_delete.png">Delete</a>
     </div>
   `
   return html;
@@ -196,7 +269,8 @@ function generateBorePopupHTML(workDate, crewName, footage, rock) {
 function drawSavedBores() {
   for (const bore of savedBores) {
     let line = L.polyline(bore.position, { color: "red", weight: 7 });
-    line.bindPopup(generateBorePopupHTML(bore.work_date, bore.crew_name, bore.footage, false));
+    bore.line = line;
+    line.bindPopup(generateBorePopupHTML(bore.work_date, bore.crew_name, bore.footage, false, bore.id, bore.position));
     line.addTo(map);
     savedLines.push(line);
   }
@@ -215,7 +289,7 @@ function drawSavedVaults() {
 function drawSavedRocks() {
   for (const bore of savedRocks) {
     let line = L.polyline(bore.position, { color: "pink", weight: 4, dashArray: "8 8" });
-    line.bindPopup(generateBorePopupHTML(bore.work_date, bore.crew_name, bore.footage, true));
+    line.bindPopup(generateBorePopupHTML(bore.work_date, bore.crew_name, bore.footage, true, bore.id, bore.position));
     line.addTo(map);
     savedLines.push(line);
   }
@@ -351,15 +425,8 @@ function finishPlacing() {
 
   if (currentLine != 0) {
     let footage = document.getElementById('footageInput').value;
-    let boreType = 0;
-    if (addingRock) {
-      boreType = 'rock';
-    } else if (addingBore) {
-      boreType = "regular";
-    } else {
-      console.log('problem');
-      return;
-    }
+    let boreType = (addingRock) ? 'rock' : 'regular'
+
     if (isNaN(footage) || footage == "") {
       alert('Footage must be a number');
       return;
@@ -368,7 +435,8 @@ function finishPlacing() {
     if (confirm(`Confirm placing ${footage}ft bore? ${(addingRock) ? "ROCK" : ""}`)) {
       let linePoints = [];
       for (const marker of currentLineMarkers) {
-        linePoints.push(marker.getLatLng());
+        let pos = marker.getLatLng()
+        linePoints.push([pos.lat, pos.lng]);
       }
       let bore = {
         points: linePoints,
@@ -376,13 +444,15 @@ function finishPlacing() {
         jobName: jobName,
         pageId: pageId,
         boreType: boreType,
+        line: currentLine,
+        id: -1,
       };
       submittedBores.push(bore);
       for (const marker of currentLineMarkers) {
         map.removeLayer(marker);
       }
 
-      currentLine.bindPopup(generateBorePopupHTML(new Date(), crewName, footage, (addingRock) ? true : false));
+      currentLine.bindPopup(generateBorePopupHTML(new Date(), crewName, footage, addingRock, -1, bore.points));
 
       currentLine = 0;
       currentLineMarkers = [];
@@ -486,6 +556,10 @@ function undoButton() {
 
 
 function sendRequest(body, url) {
+  // for some reason can't send line object request
+  body.line = undefined;
+  body.marker = undefined;
+
   let req = new XMLHttpRequest();
   req.open("POST", `http://192.168.86.36:3000/${url}`);
   req.setRequestHeader("Content-Type", "application/json");
@@ -501,8 +575,10 @@ function sendPost() {
       jobName: jobName,
       crew: crewName,
       pageNumber: pageId,
+      marker: vault.marker,
     };
-    sendRequest(postObj, "inputData");
+    let reqObj = { ...postObj }
+    sendRequest(reqObj, "inputData");
     postedVaults.push(vault);
   }
 
@@ -515,9 +591,11 @@ function sendPost() {
       crew: crewName,
       pageNumber: pageId,
       boreType: bore.boreType,
+      line: bore.line,
     }
-    sendRequest(postObj, "inputData");
-    postedBores.push(bore);
+    let reqObj = { ...postObj };
+    sendRequest(reqObj, "inputData");
+    postedBores.push(postObj);
   }
 
   submittedMarkers = [];

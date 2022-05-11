@@ -15,7 +15,7 @@ function insertBore(points, footage, crew, job, pageId, boreType) {
   let query = `INSERT INTO ${tableName}(footage, crew_name, job_name, page_id, position) VALUES `;
   query += `(${footage}, '${crew}', '${job}', ${pageId}, '{`;
   for (const point of points) {
-    query += `{${point.lat}, ${point.lng}},`;
+    query += `{${point[0]}, ${point[1]}},`;
   }
   query = query.slice(0, -1);
   query += `}');`;
@@ -38,7 +38,10 @@ function insertVault(size, crew, job, pageId, position) {
 }
 
 router.post('/', (req, res, next) => {
+  console.log(`input request`);
   let data = req.body;
+  console.log('---------------------');
+  console.log(data);
   pool.query(`SELECT * FROM pages WHERE job_name='${data.jobName}' AND page_number=${data.pageNumber}`, (err, resp) => {
     let pageId = resp.rows[0].id;
     if (data.objType == "bore") {

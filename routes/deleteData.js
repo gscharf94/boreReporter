@@ -55,10 +55,31 @@ function deleteVaultNoId(data) {
   });
 }
 
+function deleteBoreId(id, rock) {
+  console.log('this happens');
+  let query = `DELETE FROM ${(rock) ? "rocks" : "bores"} WHERE id=${id}`;
+  pool.query(query, (err, resp) => {
+    if (err) {
+      console.log(`error deleting ${(rock) ? "rock" : "bore"} id: ${id}`);
+    }
+    console.log(`deleted ${(rock) ? "rock" : "bore"} id: ${id}`);
+  });
+}
+
+function deleteBoreNoId(data) {
+  console.log(`delete request`);
+  console.log(data);
+  console.log('--------------------------');
+}
+
 router.post('/', (req, res, next) => {
   let data = req.body;
+  console.log(`delete request`);
+  console.log(data);
   if (data.type == "vault") {
     (data.id == -1) ? deleteVaultNoId(data) : deleteVaultId(data.id);
+  } else if (data.type == "bore") {
+    (data.id == -1) ? deleteBoreNoId(data) : deleteBoreId(data.id, data.rock);
   }
 });
 
