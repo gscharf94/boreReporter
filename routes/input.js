@@ -27,9 +27,6 @@ router.get('/:jobName/:pageId', (req, res, next) => {
           AND vaults.job_name='${jobName}';`
           , (err, resp3) => {
             let vaults = resp3.rows;
-
-            console.log(vaults);
-
             pool.query(
               `SELECT * FROM rocks
               INNER JOIN pages ON rocks.job_name=pages.job_name

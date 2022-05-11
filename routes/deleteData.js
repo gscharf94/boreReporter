@@ -23,8 +23,6 @@ function deleteVaultId(id) {
 
 function deleteVaultNoId(data) {
   let query = `SELECT * FROM pages WHERE job_name='${data.jobName}' AND page_number=${data.pageNumber};`;
-  console.log('query1');
-  console.log(query);
   let resp = pool.query(query, (err, resp) => {
     if (err) {
       console.log(`problem searching page for vault: ${data.jobName} - SH${data.pageNumber}`);
@@ -41,8 +39,6 @@ function deleteVaultNoId(data) {
       AND position='{${data.position[0]},${data.position[1]}}';
     `
 
-    console.log('query2');
-    console.log(query);
     let resp2 = pool.query(query, (err, resp2) => {
       if (err) {
         console.log(`problem searching vault for page`);
@@ -61,9 +57,6 @@ function deleteVaultNoId(data) {
 
 router.post('/', (req, res, next) => {
   let data = req.body;
-  console.log(`delete command`);
-  console.log(data);
-
   if (data.type == "vault") {
     (data.id == -1) ? deleteVaultNoId(data) : deleteVaultId(data.id);
   }

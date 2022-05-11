@@ -1,4 +1,19 @@
---- create database to store information
+-̶-̶-̶ ̶c̶r̶e̶a̶t̶e̶ ̶d̶a̶t̶a̶b̶a̶s̶e̶ ̶t̶o̶ ̶s̶t̶o̶r̶e̶ ̶i̶n̶f̶o̶r̶m̶a̶t̶i̶o̶n̶
 
---- create way to access different pages of same job and different jobs
+-̶-̶-̶ ̶c̶r̶e̶a̶t̶e̶ ̶w̶a̶y̶ ̶t̶o̶ ̶a̶c̶c̶e̶s̶s̶ ̶d̶i̶f̶f̶e̶r̶e̶n̶t̶ ̶p̶a̶g̶e̶s̶ ̶o̶f̶ ̶s̶a̶m̶e̶ ̶j̶o̶b̶ ̶a̶n̶d̶ ̶d̶i̶f̶f̶e̶r̶e̶n̶t̶ ̶j̶o̶b̶s̶
 
+
+
+05 - 11
+___________
+
+- check username before deleting item
+- decide whether to show everything to everyone or just their own stuff
+- add delete bore
+
+
+
+some day in the future
+___________________
+
+add option to edit items

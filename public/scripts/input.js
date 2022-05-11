@@ -205,8 +205,6 @@ function drawSavedBores() {
 function drawSavedVaults() {
   for (const vault of savedVaults) {
     let marker = L.marker(vault.position, { icon: iconTrans[vault.vault_size] });
-    console.log(`drawing saved vault`);
-    console.log(vault);
     marker.bindPopup(generateVaultPopupHTML(vault.work_date, vault.crew_name, vault.vault_size, vault.id, -1));
     marker.addTo(map);
     vault.marker = marker;

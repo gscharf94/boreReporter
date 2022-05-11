@@ -4,7 +4,6 @@ const { pool } = require('../db');
 
 function insertBore(points, footage, crew, job, pageId, boreType) {
   let tableName = "";
-  console.log(boreType);
   if (boreType == "rock") {
     tableName = "rocks";
   } else if (boreType == "regular") {
@@ -21,9 +20,6 @@ function insertBore(points, footage, crew, job, pageId, boreType) {
   query = query.slice(0, -1);
   query += `}');`;
 
-  console.log('bore query');
-  console.log(query);
-
   pool.query(query);
 }
 
@@ -37,9 +33,6 @@ function insertVault(size, crew, job, pageId, position) {
   };
 
   query += `(${trans[size]}, '${crew}', '${job}', ${pageId}, '{${position.lat}, ${position.lng}}');`
-
-  console.log('vault query')
-  console.log(query);
 
   pool.query(query);
 }
