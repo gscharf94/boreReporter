@@ -107,57 +107,59 @@ function formatDate(dateStr) {
 }
 
 function deleteSavedVault(id) {
-  console.log(`delete saved vault id: ${id}`);
-  console.log('current marker');
-  console.log(currentMarker);
-  console.log('savedMarkers');
-  console.log(savedMarkers);
-  console.log('savedVaults');
-  console.log(savedVaults);
-  console.log('postedVaults');
-  console.log(postedVaults);
-  console.log('submittedMarkers');
-  console.log(submittedMarkers);
+  // if (!confirm('Are you sure you want to delete the vault?')) {
+  //   return;
+  // }
+
+  let tmpArray = [];
+  for (const vault of savedVaults) {
+    if (vault.id == id) {
+      map.removeLayer(vault.marker);
+    } else {
+      tmpArray.push(vault);
+    }
+  }
+  savedVaults = tmpArray;
+
+  let obj = {
+    type: "vault",
+    id: id,
+  }
+  sendRequest(obj, "deleteData");
 }
 
 function deleteVault(workDate, crewName, vaultSize, position) {
-  console.log(workDate);
-  console.log(crewName);
-  console.log(vaultSize);
-  console.log(position);
-
-  console.log('current marker');
-  console.log(currentMarker);
-  console.log('savedMarkers');
-  console.log(savedMarkers);
-  console.log('savedVaults');
-  console.log(savedVaults);
-  console.log('postedVaults');
-  console.log(postedVaults);
-  console.log('submittedMarkers');
-  console.log(submittedMarkers);
-
-  for (const layer in map._layers) {
-    console.log(map._layers[layer]);
-    if (map._layers[layer]._icon) {
-      console.log('^ marker');
-    } else if (map._layers[layer]._path) {
-      console.log('^ bore');
-    } else {
-      console.log('something else ^');
-    }
-  }
-
-
-  // let tmpList = [];
-  // let foundSubmitted = false;
-  // for (const marker of submittedMarkers) {
-
+  // if (!confirm('Are you sure you want to delete the vault?')) {
+  //   return;
   // }
 
+  position = position.split(",").map((val) => { return parseFloat(val); });
+
+  let tmpArray = [];
+  for (const marker of postedVaults) {
+    if (position[0] == marker.position.lat && position[1] == marker.position.lng) {
+      map.removeLayer(marker.marker);
+    } else {
+      tmpArray.push(marker);
+    }
+  }
+  postedVaults = tmpArray;
+
+  let obj = {
+    workDate: workDate,
+    crewName: crewName,
+    vaultSize: vaultSize,
+    position: position,
+    jobName: jobName,
+    pageNumber: pageId,
+    type: "vault",
+    id: -1,
+  }
+
+  sendRequest(obj, "deleteData");
 }
 
-function generateVaultPopupHTML(workDate, crewName, vaultSize, submitted, vaultId, position) {
+function generateVaultPopupHTML(workDate, crewName, vaultSize, vaultId, position) {
   let deleteArgs = "";
   if (vaultId !== -1) {
     deleteArgs = `deleteSavedVault(${vaultId})`;
@@ -173,12 +175,11 @@ function generateVaultPopupHTML(workDate, crewName, vaultSize, submitted, vaultI
       <a style="grid-column: 2;grid-row:1;margin: auto;text-align: right;" href="#"><img style="width:30%;align-self: center;" src="/images/icons/small_edit.png">Edit</a>
       <a onclick="${deleteArgs}" style="grid-column: 2;grid-row:3;margin: auto;text-align: right;" href="#"><img style="width:30%;align-self: center;" src="/images/icons/small_delete.png" >Delete</a>
     </div>
-    ${(submitted) ? '<h3 style="text-align: center;">Submitted ✅</h3>' : '<h3 style="text-align: center;">Pending ❌</h3>'}
   `
   return html;
 }
 
-function generateBorePopupHTML(workDate, crewName, footage, submitted, rock) {
+function generateBorePopupHTML(workDate, crewName, footage, rock) {
   let html = `
     <div style="display: grid; width:150px;">
       <h3 style="grid-column: 1; grid-row: 1;margin-top: 0;margin-bottom: 0;align-self: center;">${crewName}</h3>
@@ -188,7 +189,6 @@ function generateBorePopupHTML(workDate, crewName, footage, submitted, rock) {
       <a style="grid-column: 2;grid-row:1;margin: auto;text-align: right;" href="#"><img style="width:30%;align-self: center;" src="/images/icons/small_edit.png">Edit</a>
       <a style="grid-column: 2;grid-row:3;margin: auto;text-align: right;" href="#"><img style="width:30%;align-self: center;" src="/images/icons/small_delete.png">Delete</a>
     </div>
-    ${(submitted) ? '<h3 style="text-align: center;">Submitted ✅</h3>' : '<h3 style="text-align: center;">Pending ❌</h3>'}
   `
   return html;
 }
@@ -196,7 +196,7 @@ function generateBorePopupHTML(workDate, crewName, footage, submitted, rock) {
 function drawSavedBores() {
   for (const bore of savedBores) {
     let line = L.polyline(bore.position, { color: "red", weight: 7 });
-    line.bindPopup(generateBorePopupHTML(bore.work_date, bore.crew_name, bore.footage, true, false));
+    line.bindPopup(generateBorePopupHTML(bore.work_date, bore.crew_name, bore.footage, false));
     line.addTo(map);
     savedLines.push(line);
   }
@@ -205,9 +205,11 @@ function drawSavedBores() {
 function drawSavedVaults() {
   for (const vault of savedVaults) {
     let marker = L.marker(vault.position, { icon: iconTrans[vault.vault_size] });
-    // marker.bindPopup(`SIZE: ${vault.vault_size} CREW: ${vault.crew_name} DATE: ${vault.work_date}`);
-    marker.bindPopup(generateVaultPopupHTML(vault.work_date, vault.crew_name, vault.vault_size, true, vault.id, -1));
+    console.log(`drawing saved vault`);
+    console.log(vault);
+    marker.bindPopup(generateVaultPopupHTML(vault.work_date, vault.crew_name, vault.vault_size, vault.id, -1));
     marker.addTo(map);
+    vault.marker = marker;
     savedMarkers.push(marker);
   }
 }
@@ -215,7 +217,7 @@ function drawSavedVaults() {
 function drawSavedRocks() {
   for (const bore of savedRocks) {
     let line = L.polyline(bore.position, { color: "pink", weight: 4, dashArray: "8 8" });
-    line.bindPopup(generateBorePopupHTML(bore.work_date, bore.crew_name, bore.footage, true, true));
+    line.bindPopup(generateBorePopupHTML(bore.work_date, bore.crew_name, bore.footage, true));
     line.addTo(map);
     savedLines.push(line);
   }
@@ -331,9 +333,10 @@ function finishPlacing() {
       let vault = {
         position: currentMarker.getLatLng(),
         size: trans[typeOfBox],
+        marker: currentMarker,
       };
       let pos = [vault.position.lat, vault.position.lng];
-      currentMarker.bindPopup(generateVaultPopupHTML(new Date(), crewName, typeOfBox, false, -1, pos));
+      currentMarker.bindPopup(generateVaultPopupHTML(new Date(), crewName, typeOfBox, -1, pos));
       submittedMarkers.push(vault);
       currentMarker = 0;
 
@@ -381,7 +384,7 @@ function finishPlacing() {
         map.removeLayer(marker);
       }
 
-      currentLine.bindPopup(generateBorePopupHTML(new Date(), crewName, footage, false, (addingRock) ? true : false));
+      currentLine.bindPopup(generateBorePopupHTML(new Date(), crewName, footage, (addingRock) ? true : false));
 
       currentLine = 0;
       currentLineMarkers = [];
@@ -399,7 +402,7 @@ function finishPlacing() {
     }
   }
 
-
+  sendPost();
   clearInputs();
 }
 
@@ -484,9 +487,9 @@ function undoButton() {
 }
 
 
-function sendRequest(body) {
+function sendRequest(body, url) {
   let req = new XMLHttpRequest();
-  req.open("POST", "http://192.168.86.36:3000/inputData");
+  req.open("POST", `http://192.168.86.36:3000/${url}`);
   req.setRequestHeader("Content-Type", "application/json");
   req.send(JSON.stringify(body));
 }
@@ -501,7 +504,7 @@ function sendPost() {
       crew: crewName,
       pageNumber: pageId,
     };
-    sendRequest(postObj);
+    sendRequest(postObj, "inputData");
     postedVaults.push(vault);
   }
 
@@ -515,7 +518,7 @@ function sendPost() {
       pageNumber: pageId,
       boreType: bore.boreType,
     }
-    sendRequest(postObj);
+    sendRequest(postObj, "inputData");
     postedBores.push(bore);
   }
 

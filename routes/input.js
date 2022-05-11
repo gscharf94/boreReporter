@@ -21,12 +21,14 @@ router.get('/:jobName/:pageId', (req, res, next) => {
 
         let bores = resp2.rows;
         pool.query(
-          `SELECT * FROM vaults
+          `SELECT vaults.id, vaults.crew_name, vaults.vault_size, vaults.job_name, vaults.page_id, vaults.position, vaults.work_date, pages.page_number FROM vaults
           INNER JOIN pages on vaults.job_name=pages.job_name
           WHERE pages.page_number=${pageId}
           AND vaults.job_name='${jobName}';`
           , (err, resp3) => {
             let vaults = resp3.rows;
+
+            console.log(vaults);
 
             pool.query(
               `SELECT * FROM rocks

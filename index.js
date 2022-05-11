@@ -10,6 +10,7 @@ const inputRouter = require('./routes/input');
 const viewJobsRouter = require('./routes/viewJobs');
 const inputDataRouter = require('./routes/inputData');
 const loginRouter = require('./routes/login');
+const deleteDataRouter = require('./routes/deleteData');
 
 
 app.set('view engine', 'pug');
@@ -26,6 +27,7 @@ app.use('/', loginRouter);
 app.use('/input', inputRouter);
 app.use('/viewJobs', viewJobsRouter);
 app.use('/inputData', inputDataRouter);
+app.use('/deleteData', deleteDataRouter);
 
 app.listen(port, () => {
   console.log(`listening at http://localhost:${port}`);
