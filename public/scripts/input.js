@@ -225,6 +225,16 @@ function deleteVault(workDate, crewName, vaultSize, position) {
   sendRequest(obj, "deleteData");
 }
 
+function goBack() {
+  if (currentLine !== 0 || currentMarker !== 0) {
+    if (confirm('Are you sure you want to go back? There are unsubmitted bores/vaults.')) {
+      window.location.href = "http://192.168.86.36:3000/viewJobs";
+    }
+  } else {
+    window.location.href = "http://192.168.86.36:3000/viewJobs";
+  }
+}
+
 function generateVaultPopupHTML(workDate, vaultCrewName, vaultSize, vaultId, position) {
   let deleteArgs = "";
   if (vaultId !== -1) {

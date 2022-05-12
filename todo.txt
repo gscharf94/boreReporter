@@ -7,9 +7,9 @@
 05 - 11
 ___________
 
-- check username before deleting item
-- decide whether to show everything to everyone or just their own stuff
-- add delete bore (sort of done. saved bores can be deleted.. not current ones)
+-̶ ̶c̶h̶e̶c̶k̶ ̶u̶s̶e̶r̶n̶a̶m̶e̶ ̶b̶e̶f̶o̶r̶e̶ ̶d̶e̶l̶e̶t̶i̶n̶g̶ ̶i̶t̶e̶m̶
+- decide whether to show everything to everyone or just their own stuff (I think only admin will be able to see everything)
+-̶ ̶a̶d̶d̶ ̶d̶e̶l̶e̶t̶e̶ ̶b̶o̶r̶e̶ ̶(̶s̶o̶r̶t̶ ̶o̶f̶ ̶d̶o̶n̶e̶.̶ ̶s̶a̶v̶e̶d̶ ̶b̶o̶r̶e̶s̶ ̶c̶a̶n̶ ̶b̶e̶ ̶d̶e̶l̶e̶t̶e̶d̶.̶.̶ ̶n̶o̶t̶ ̶c̶u̶r̶r̶e̶n̶t̶ ̶o̶n̶e̶s̶)̶
 
 
 
@@ -17,3 +17,20 @@ some day in the future
 ___________________
 
 add option to edit items
+
+
+05-12
+________
+
+- change so it's public/prints/${jobName}_prints.pdf instead of /public/prints/${jobName}/prints.pdf
+  this way the file name has the job name and is more clear
+
+- add "this week's production" to main page
+
+- add separate page to view production, with more data available to admin accounts
+
+- create admin accounts
+
+- redo the zoom for the icons
+
+- redo the colors/weights for bores.. decide whether different people get different colors (probably not)

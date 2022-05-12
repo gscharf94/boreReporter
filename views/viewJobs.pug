@@ -4,15 +4,20 @@ block style
   link(rel="stylesheet", href="/stylesheets/viewJobs.css")
 
 block content
-  h1#usernameHeader Current User
-  button#logoutButton(onclick="logoutRedirect()") Logout
-  each job in jobs
-    div#jobContainer
-      h2 #{job.job_name}
-      ul#pageLinks
-        each page in job.pages
-          li
-           a(href=`../input/${job.job_name}/${page}`) SH#{page}
+  div#usernameHeaderContainer
+    h1#usernameHeader Current User
+    button#logoutButton(onclick="logoutRedirect()") Logout
+  div#jobsContainer
+    each job in jobs
+      div(id=`${job.job_name}Container`, class="jobContainer")
+        div.jobHeaderContainer
+          h2.jobHeader #{job.job_name}
+          img(src="/images/icons/download_blue.png", onclick=`window.location.href='http://192.168.86.36:3000/prints/${job.job_name}/prints.pdf'`).downloadIcon
+        div.pageLinks
+          each page in job.pages
+           a(href=`../input/${job.job_name}/${page}`).pageLink SH#{page}
+  div#weekProductionContainer
+    h1 Production This Week
 
 block scripts
   script(src="/scripts/viewJobs.js")
