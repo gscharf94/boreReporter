@@ -9,7 +9,7 @@ ___________
 
 - check username before deleting item
 - decide whether to show everything to everyone or just their own stuff
-- add delete bore
+- add delete bore (sort of done. saved bores can be deleted.. not current ones)
 
 
 

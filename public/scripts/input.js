@@ -174,7 +174,6 @@ function deleteBore(workDate, crewName, footage, points, rock) {
 }
 
 function deleteSavedBore(id, rock) {
-
   let tmpArray = [];
   for (const bore of savedBores) {
     if (id == bore.id) {
@@ -226,17 +225,21 @@ function deleteVault(workDate, crewName, vaultSize, position) {
   sendRequest(obj, "deleteData");
 }
 
-function generateVaultPopupHTML(workDate, crewName, vaultSize, vaultId, position) {
+function generateVaultPopupHTML(workDate, vaultCrewName, vaultSize, vaultId, position) {
   let deleteArgs = "";
   if (vaultId !== -1) {
-    deleteArgs = `deleteSavedVault(${vaultId})`;
+    if (vaultCrewName !== crewName) {
+      deleteArgs = `alert('You are logged in as: ${crewName}. Only ${vaultCrewName} can delete this vault.')`;
+    } else {
+      deleteArgs = `deleteSavedVault(${vaultId})`;
+    }
   } else {
-    deleteArgs = `deleteVault('${workDate}', '${crewName}', '${vaultSize}', '${position}')`;
+    deleteArgs = `deleteVault('${workDate}', '${vaultCrewName}', '${vaultSize}', '${position}')`;
   }
 
   let html = `
     <div style="display: grid;width:150px;">
-      <h3 style="grid-column: 1;grid-row: 1;margin-top: 0;margin-bottom: 0;align-self: center;">${crewName}</h3>
+      <h3 style="grid-column: 1;grid-row: 1;margin-top: 0;margin-bottom: 0;align-self: center;">${vaultCrewName}</h3>
       <h3 style="grid-column: 1;grid-row: 2;margin-top: 0;margin-bottom: 0;align-self: center;">${formatDate(workDate)}</h3>
       <h3 style="grid-column: 1;grid-row: 3;margin-top: 0;margin-bottom: 0;align-self: center;">${trans[vaultSize]}</h3>
       <a style="grid-column: 2;grid-row:1;margin: auto;text-align: right;" href="#"><img style="width:30%;align-self: center;" src="/images/icons/small_edit.png">Edit</a>
@@ -246,16 +249,20 @@ function generateVaultPopupHTML(workDate, crewName, vaultSize, vaultId, position
   return html;
 }
 
-function generateBorePopupHTML(workDate, crewName, footage, rock, boreId, points) {
+function generateBorePopupHTML(workDate, boreCrewName, footage, rock, boreId, points) {
   let deleteArgs = "";
   if (boreId !== -1) {
-    deleteArgs = `deleteSavedBore(${boreId}, ${rock})`;
+    if (boreCrewName !== crewName) {
+      deleteArgs = `alert('You are logged in as: ${crewName}. Only ${boreCrewName} can delete this bore.')`;
+    } else {
+      deleteArgs = `deleteSavedBore(${boreId}, ${rock})`;
+    }
   } else {
-    deleteArgs = `deleteBore('${workDate}', '${crewName}', '${footage}', '${points}', ${rock})`
+    deleteArgs = `deleteBore('${workDate}', '${boreCrewName}', '${footage}', '${points}', ${rock})`
   }
   let html = `
     <div style="display: grid; width:150px;">
-      <h3 style="grid-column: 1; grid-row: 1;margin-top: 0;margin-bottom: 0;align-self: center;">${crewName}</h3>
+      <h3 style="grid-column: 1; grid-row: 1;margin-top: 0;margin-bottom: 0;align-self: center;">${boreCrewName}</h3>
       <h3 style="grid-column: 1; grid-row: 2;margin-top: 0;margin-bottom: 0;align-self: center;">${formatDate(workDate)}</h3>
       <h3 style="grid-column: 1; grid-row: 3;margin-top: 0;margin-bottom: 0;align-self: center;">${footage}ft</h3>
       <h3 style="grid-column: 1; grid-row: 4;margin-top: 0;margin-bottom: 0;align-self: center;">${(rock) ? "ROCK" : ""}</h3>
