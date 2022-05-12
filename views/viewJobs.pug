@@ -17,7 +17,51 @@ block content
           each page in job.pages
            a(href=`../input/${job.job_name}/${page}`).pageLink SH#{page}
   div#weekProductionContainer
-    h1 Production This Week
+    h1#weeklyBoresHeader.weeklyHeader Weekly Bores -
+    table#weeklyBoresTable.weeklyTable
+      tr
+        th Footage
+        th Crew
+        th Job Name
+        th SH#
+        th Work Date
+      each bore in bores
+        tr
+          td #{bore.footage}ft
+          td #{bore.crew_name}
+          td #{bore.job_name}
+          td #{bore.page_number}
+          td #{bore.work_date_formatted}
+    h1#weeklyRocksHeader.weeklyHeader Weekly Rocks -
+    table#weeklyRocksTable.weeklyTable
+      tr
+        th Footage
+        th Crew
+        th Job Name
+        th SH#
+        th Work Date
+      each rock in rocks
+        tr
+          td #{rock.footage}ft
+          td #{rock.crew_name}
+          td #{rock.job_name}
+          td #{rock.page_number}
+          td #{rock.work_date_formatted}
+    h1#weeklyVaultsHeader.weeklyHeader Weekly Vaults -
+    table#weeklyVaultsTable.weeklyTable
+      tr
+        th Vault Size
+        th Crew
+        th Job Name
+        th SH#
+        th Work Date
+      each vault in vaults
+        tr
+          td #{vault.vault_size_formatted}
+          td #{vault.crew_name}
+          td #{vault.job_name}
+          td #{vault.page_number}
+          td #{vault.work_date_formatted}
 
 block scripts
   script(src="/scripts/viewJobs.js")

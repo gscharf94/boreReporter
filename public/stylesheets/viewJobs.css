@@ -19,6 +19,7 @@ html {
 
 #logoutButton {
   border: none;
+  cursor: pointer;
   padding: 10px;
   grid-column: 2;
   grid-row: 1;
@@ -92,4 +93,29 @@ html {
   border-radius: 10%;
   padding: 5px;
   font-weight: bold;
+}
+
+th,
+td {
+  font-family: "Fira Mono";
+  text-align: center;
+}
+
+th {
+  background-color: blue;
+  color: white;
+}
+
+td {
+  background-color: white;
+}
+
+.weeklyTable {
+  margin: auto;
+  width: 80%;
+}
+
+.weeklyHeader {
+  margin: auto;
+  text-align: center;
 }
