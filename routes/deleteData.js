@@ -67,9 +67,18 @@ function deleteBoreId(id, rock) {
 }
 
 function deleteBoreNoId(data) {
-  console.log(`delete request`);
-  console.log(data);
-  console.log('--------------------------');
+  // let query = `SELECT * FROM pages WHERE job_name='${data.jobName}' AND page_number=${data.pageNumber};`;
+  // let resp = pool.query(query, (err, resp) => {
+  //   if (err) {
+  //     console.log(`problem searching page for bore: ${data.jobName} - SH${data.pageNumber}`);
+  //   }
+
+  //   let pageId = resp.rows[0].id;
+  //   query = `
+  //     SELECT * FROM 
+  //   `
+  // })
+  console.log(`DELETEBORENOID NOT WRITTEN. THIS NEEDS TO BE DONE BUT I HAVE TO CREATE FORMATTING CODE FOR POSITION COLUMN`);
 }
 
 router.post('/', (req, res, next) => {

@@ -167,6 +167,7 @@ function deleteBore(workDate, crewName, footage, points, rock) {
     pageNumber: pageId,
     rock: rock,
     id: -1,
+    type: "bore",
   }
 
   let reqObj = { ...obj };
