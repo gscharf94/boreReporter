@@ -10,7 +10,7 @@ ___________
 -̶ ̶c̶h̶e̶c̶k̶ ̶u̶s̶e̶r̶n̶a̶m̶e̶ ̶b̶e̶f̶o̶r̶e̶ ̶d̶e̶l̶e̶t̶i̶n̶g̶ ̶i̶t̶e̶m̶
 - decide whether to show everything to everyone or just their own stuff (I think only admin will be able to see everything)
 -̶ ̶a̶d̶d̶ ̶d̶e̶l̶e̶t̶e̶ ̶b̶o̶r̶e̶ ̶(̶s̶o̶r̶t̶ ̶o̶f̶ ̶d̶o̶n̶e̶.̶ ̶s̶a̶v̶e̶d̶ ̶b̶o̶r̶e̶s̶ ̶c̶a̶n̶ ̶b̶e̶ ̶d̶e̶l̶e̶t̶e̶d̶.̶.̶ ̶n̶o̶t̶ ̶c̶u̶r̶r̶e̶n̶t̶ ̶o̶n̶e̶s̶)̶
-OH SHIT I DID NOT DO THIS
+O̶H̶ ̶S̶H̶I̶T̶ ̶I̶ ̶D̶I̶D̶ ̶N̶O̶T̶ ̶D̶O̶ ̶T̶H̶I̶S̶ ̶(̶n̶o̶w̶ ̶i̶ ̶d̶i̶d̶ ̶8̶)̶ ̶)̶
 
 
 
@@ -18,6 +18,8 @@ some day in the future
 ___________________
 
 add option to edit items
+
+maybe crop map so there isn't empty space
 
 
 05-12

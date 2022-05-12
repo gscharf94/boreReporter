@@ -61,24 +61,54 @@ function deleteBoreId(id, rock) {
   pool.query(query, (err, resp) => {
     if (err) {
       console.log(`error deleting ${(rock) ? "rock" : "bore"} id: ${id}`);
+    } else {
+      console.log(`deleted ${(rock) ? "rock" : "bore"} id: ${id}`);
     }
-    console.log(`deleted ${(rock) ? "rock" : "bore"} id: ${id}`);
   });
 }
 
 function deleteBoreNoId(data) {
-  // let query = `SELECT * FROM pages WHERE job_name='${data.jobName}' AND page_number=${data.pageNumber};`;
-  // let resp = pool.query(query, (err, resp) => {
-  //   if (err) {
-  //     console.log(`problem searching page for bore: ${data.jobName} - SH${data.pageNumber}`);
-  //   }
+  let tableName = (data.rock) ? "rocks" : "bores";
+  let position = "{";
+  for (const point of data.points) {
+    position += `{${point[0]},${point[1]}},`;
+  }
+  position = position.slice(0, -1);
+  position += "}";
 
-  //   let pageId = resp.rows[0].id;
-  //   query = `
-  //     SELECT * FROM 
-  //   `
-  // })
-  console.log(`DELETEBORENOID NOT WRITTEN. THIS NEEDS TO BE DONE BUT I HAVE TO CREATE FORMATTING CODE FOR POSITION COLUMN`);
+  let query = `SELECT * FROM pages WHERE job_name='${data.jobName}' AND page_number=${data.pageNumber};`;
+  let resp = pool.query(query, (err, resp) => {
+    if (err) {
+      console.log(`problem searching page for bore: ${data.jobName} - SH${data.pageNumber}`);
+    }
+
+    let pageId = resp.rows[0].id;
+    query = `
+      SELECT * FROM ${tableName}
+      WHERE page_id=${pageId}
+      AND job_name='${data.jobName}'
+      AND crew_name='${data.crewName}'
+      AND footage=${data.footage}
+      AND work_date='${formatDate(data.workDate)}'
+      AND position='${position}';
+    `;
+
+    let resp2 = pool.query(query, (err, resp2) => {
+      if (err) {
+        console.log(`error searching for bore`);
+      }
+
+      let boreId = resp2.rows[0].id;
+      query = `DELETE FROM ${tableName} WHERE id=${boreId}`;
+      let resp3 = pool.query(query, (err, resp3) => {
+        if (err) {
+          console.log(`error deleting ${(data.rock) ? "rock" : "bore"} id: ${boreId}`);
+        } else {
+          console.log(`deleted ${(data.rock) ? "rock" : "bore"} id: ${boreId}`);
+        }
+      });
+    });
+  });
 }
 
 router.post('/', (req, res, next) => {

@@ -13,7 +13,7 @@ savedBores = parseJumbledJSON(savedBores);
 savedVaults = parseJumbledJSON(savedVaults);
 savedRocks = parseJumbledJSON(savedRocks);
 
-let map = L.map('map').setView([65, -46], 2);
+let map = L.map('map').setView([65, -46], 3);
 // let map = L.map('map').fitWorld();
 L.tileLayer('http://192.168.86.36:3000/images/{job}/{page}/{z}/{x}/{y}.jpg', {
   attribution: `${jobName} - SH${pageId}`,
