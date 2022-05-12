@@ -15,6 +15,10 @@ html {
   width: 100vw;
 }
 
+.leaflet-control-attribution {
+  font-size: 3ch;
+}
+
 #vaultTypeLabel {
   grid-column: 1;
   grid-row: 2;

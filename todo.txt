@@ -35,3 +35,5 @@ ________
 - redo the zoom for the icons
 
 - redo the colors/weights for bores.. decide whether different people get different colors (probably not)
+
+- add <- and -> page links in inputBore
