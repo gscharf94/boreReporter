@@ -59,7 +59,7 @@ function isAdmin(crewName, res) {
         }
 
         res.render('viewProduction', {
-          crewName: crewName,
+          crewName: 'ADMIN',
           bores: bores,
           vaults: vaults,
           rocks: rocks,
