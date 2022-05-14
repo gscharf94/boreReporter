@@ -377,8 +377,10 @@ function addVault() {
   addingRock = false;
   toggleInputVisibility(0);
 
-  document.getElementById('addBore').style.color = "lightgray";
-  document.getElementById('addRock').style.color = "lightgray";
+  document.getElementById('addBore').style.color = "#939393";
+  document.getElementById('addBore').style.backgroundColor = "#616161";
+  document.getElementById('addRock').style.color = "#939393";
+  document.getElementById('addRock').style.backgroundColor = '#616161';
 }
 
 function addBore() {
@@ -390,8 +392,10 @@ function addBore() {
   addingRock = false;
   toggleInputVisibility(1);
 
-  document.getElementById('addBox').style.color = "lightgray";
-  document.getElementById('addRock').style.color = "lightgray";
+  document.getElementById('addBox').style.color = "#939393";
+  document.getElementById('addBox').style.backgroundColor = "#616161";
+  document.getElementById('addRock').style.color = "#939393";
+  document.getElementById('addRock').style.backgroundColor = "#616161";
 }
 
 function addRock() {
@@ -404,8 +408,10 @@ function addRock() {
   addingVault = false;
   toggleInputVisibility(1);
 
-  document.getElementById('addBox').style.color = "lightgray";
-  document.getElementById('addBore').style.color = "lightgray";
+  document.getElementById('addBox').style.color = "#939393";
+  document.getElementById('addBox').style.backgroundColor = "#616161";
+  document.getElementById('addBore').style.color = "#939393";
+  document.getElementById('addBore').style.backgroundColor = "#616161";
 }
 
 function finishPlacing() {
@@ -437,9 +443,13 @@ function finishPlacing() {
 
       toggleInputVisibility(0);
 
-      document.getElementById('addBox').style.color = "black";
-      document.getElementById('addBore').style.color = "black";
-      document.getElementById('undo').style.color = "lightgray";
+      document.getElementById('addBox').style.color = "white";
+      document.getElementById('addBox').style.backgroundColor = "#0a0a61";
+      document.getElementById('addBore').style.color = "white";
+      document.getElementById('addBore').style.backgroundColor = "#0a0a61";
+      document.getElementById('addRock').style.color = "white";
+      document.getElementById('addRock').style.backgroundColor = "#0a0a61";
+      document.getElementById('undo').style.color = "white";
     }
   }
 
@@ -483,10 +493,13 @@ function finishPlacing() {
 
       toggleInputVisibility(1);
 
-      document.getElementById('addBox').style.color = "black";
-      document.getElementById('addBore').style.color = "black";
-      document.getElementById('addRock').style.color = "black";
-      document.getElementById('undo').style.color = "lightgray";
+      document.getElementById('addBox').style.color = "white";
+      document.getElementById('addBox').style.backgroundColor = "#0a0a61";
+      document.getElementById('addBore').style.color = "white";
+      document.getElementById('addBore').style.backgroundColor = "#0a0a61";
+      document.getElementById('addRock').style.color = "white";
+      document.getElementById('addRock').style.backgroundColor = "#0a0a61";
+      document.getElementById('undo').style.color = "white";
     }
   }
 
@@ -563,9 +576,12 @@ function undoButton() {
   addingVault = false;
   addingRock = false;
 
-  document.getElementById('addBox').style.color = "black";
-  document.getElementById('addBore').style.color = "black";
-  document.getElementById('addRock').style.color = "black";
+  document.getElementById('addBox').style.color = "white";
+  document.getElementById('addBox').style.backgroundColor = "#0a0a61";
+  document.getElementById('addBore').style.color = "white";
+  document.getElementById('addBore').style.backgroundColor = "#0a0a61";
+  document.getElementById('addRock').style.color = "white";
+  document.getElementById('addRock').style.backgroundColor = "#0a0a61";
   document.getElementById('undo').style.color = "lightgray";
 
   document.getElementById('vaultTypeLabel').style.visibility = "hidden";

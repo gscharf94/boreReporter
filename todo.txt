@@ -28,11 +28,11 @@ ________
 - change so it's public/prints/${jobName}_prints.pdf instead of /public/prints/${jobName}/prints.pdf
   this way the file name has the job name and is more clear
 
-- add "this week's production" to main page
+-̶ ̶a̶d̶d̶ ̶"̶t̶h̶i̶s̶ ̶w̶e̶e̶k̶'̶s̶ ̶p̶r̶o̶d̶u̶c̶t̶i̶o̶n̶"̶ ̶t̶o̶ ̶m̶a̶i̶n̶ ̶p̶a̶g̶e̶
 
-- add separate page to view production, with more data available to admin accounts
+-̶ ̶a̶d̶d̶ ̶s̶e̶p̶a̶r̶a̶t̶e̶ ̶p̶a̶g̶e̶ ̶t̶o̶ ̶v̶i̶e̶w̶ ̶p̶r̶o̶d̶u̶c̶t̶i̶o̶n̶,̶ ̶w̶i̶t̶h̶ ̶m̶o̶r̶e̶ ̶d̶a̶t̶a̶ ̶a̶v̶a̶i̶l̶a̶b̶l̶e̶ ̶t̶o̶ ̶a̶d̶m̶i̶n̶ ̶a̶c̶c̶o̶u̶n̶t̶s̶
 
-- create admin accounts
+-̶ ̶c̶r̶e̶a̶t̶e̶ ̶a̶d̶m̶i̶n̶ ̶a̶c̶c̶o̶u̶n̶t̶s̶
 
 - redo the zoom for the icons
 

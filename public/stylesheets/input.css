@@ -1,5 +1,5 @@
 html {
-  background-color: darkslategray;
+  background-color: #d5d5d5;
 }
 
 #map {
@@ -24,7 +24,7 @@ html {
   grid-row: 2;
   align-self: flex-end;
   font-size: 3ch;
-  color: white;
+  color: black;
   font-weight: bold;
   visibility: hidden;
 }
@@ -46,16 +46,14 @@ html {
   visibility: hidden;
 }
 
-button:active {
-  background-color: darkgray;
-}
+
 
 button {
-  width: 100%;
+  width: 90%;
   height: 6vh;
   font-size: 2ch;
   font-weight: bold;
-  background-color: gray;
+  background-color: #616161;
   border: none;
   border-radius: 10px;
 }
@@ -63,7 +61,7 @@ button {
 #undo {
   grid-column: 4;
   grid-row: 1;
-  color: lightgray;
+  color: white;
   display: flex;
   justify-content: center;
   justify-self: right;
@@ -74,7 +72,7 @@ button {
   grid-column: 2 / span 3;
   grid-row: 2;
   font-size: 3ch;
-  color: white;
+  color: black;
   font-weight: bold;
   align-self: flex-end;
 }
@@ -111,6 +109,8 @@ button {
   justify-self: right;
   align-items: center;
   margin-top: 30px;
+  background-color: #005400;
+  color: white;
 }
 
 #submit {
@@ -121,4 +121,12 @@ button {
   justify-self: right;
   align-items: center;
   margin-top: 30px;
+  background-color: #af0000;
+  color: white;
+}
+
+.inputButton {
+  width: 95%;
+  color: white;
+  background-color: #0a0a61;
 }
