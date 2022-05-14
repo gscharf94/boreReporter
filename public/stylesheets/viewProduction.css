@@ -1,0 +1,131 @@
+html {
+  background-color: #d5d5d5;
+}
+
+td,
+th {
+  font-family: "Fira Mono";
+  text-align: center;
+}
+
+th {
+  background-color: blue;
+  color: white;
+}
+
+td {
+  background-color: white;
+}
+
+table {
+  margin: auto;
+  width: 80%;
+}
+
+.tableHeader {
+  margin: auto;
+  text-align: center;
+}
+
+#controlsContainer {
+  display: grid;
+  width: 80%;
+  margin: auto;
+  align-items: center;
+  justify-items: center;
+}
+
+.controlInput {
+  width: 80%;
+}
+
+.controlLabel {
+  font-weight: bold;
+}
+
+#startDateInput {
+  grid-row: 2;
+  grid-column: 1;
+}
+
+#startDateLabel {
+  grid-row: 1;
+  grid-column: 1;
+}
+
+#endDateInput {
+  grid-row: 2;
+  grid-column: 2;
+}
+
+#endDateLabel {
+  grid-row: 1;
+  grid-column: 2;
+}
+
+#filterJobInput {
+  grid-row: 2;
+  grid-column: 3;
+}
+
+#filterJobLabel {
+  grid-row: 1;
+  grid-column: 3;
+}
+
+#filterCrewInput {
+  grid-row: 2;
+  grid-column: 4;
+}
+
+#filterCrewLabel {
+  grid-row: 1;
+  grid-column: 4;
+}
+
+#totalsContainer {
+  display: grid;
+  width: 80%;
+  margin: auto;
+  grid-template-columns: 50% 50%;
+  align-items: center;
+}
+
+.totalHeader {
+  justify-self: right;
+}
+
+.totalValue {
+  justify-self: left;
+  margin-left: 1ch;
+}
+
+#totalBoresHeader {
+  grid-row: 1;
+  grid-column: 1;
+}
+
+#totalBoresValue {
+  grid-row: 1;
+  grid-column: 2;
+}
+
+#totalRocksHeader {
+  grid-row: 2;
+  grid-column: 1;
+}
+
+#totalRocksValue {
+  grid-row: 2;
+  grid-column: 2;
+}
+
+#totalVaultsHeader {
+  grid-row: 3;
+  grid-column: 1;
+}
+
+#totalVaultsValue {
+  grid-row: 3;
+  grid-column: 2;
+}

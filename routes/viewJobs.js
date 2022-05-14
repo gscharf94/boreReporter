@@ -54,7 +54,7 @@ router.get('/', (req, res, next) => {
       for (const bore of bores) {
         bore.work_date_formatted = formatDate(bore.work_date);
       }
-      pool.query(`SELECT vaults.id, vaults.vault_size, vaults.crew_name, vaults.job_name, vaults.work_date, vaults.page_id, pages.id FROM vaults INNER JOIN pages ON vaults.page_id=pages.id`, (err, resp3) => {
+      pool.query(`SELECT vaults.id, vaults.vault_size, vaults.crew_name, vaults.job_name, vaults.work_date, vaults.page_id, pages.page_number FROM vaults INNER JOIN pages ON vaults.page_id=pages.id`, (err, resp3) => {
         if (err) {
           console.log(`error pulling vaults for viewJobs`);
         }

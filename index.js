@@ -11,6 +11,7 @@ const viewJobsRouter = require('./routes/viewJobs');
 const inputDataRouter = require('./routes/inputData');
 const loginRouter = require('./routes/login');
 const deleteDataRouter = require('./routes/deleteData');
+const viewProductionRouter = require('./routes/viewProduction');
 
 
 app.set('view engine', 'pug');
@@ -28,6 +29,7 @@ app.use('/input', inputRouter);
 app.use('/viewJobs', viewJobsRouter);
 app.use('/inputData', inputDataRouter);
 app.use('/deleteData', deleteDataRouter);
+app.use('/viewProduction', viewProductionRouter);
 
 app.listen(port, () => {
   console.log(`listening at http://localhost:${port}`);

@@ -123,6 +123,11 @@ function thisWeek(dateStr) {
   }
 }
 
+function viewProduction() {
+  let loggedInCrew = document.cookie.split("=")[1];
+  window.location.href = `http://192.168.86.36:3000/viewProduction/${loggedInCrew}`;
+}
+
 setUsernameHeader();
 clearData();
 calculateWeeklyTotals();

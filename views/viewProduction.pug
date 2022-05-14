@@ -1,32 +1,35 @@
 extends layout.pug
 
 block style
-  link(rel="stylesheet", href="/stylesheets/viewJobs.css")
+  link(rel="stylesheet", href="/stylesheets/viewProduction.css")
 
 block content
-  div#usernameHeaderContainer
-    h1#usernameHeader Current User
-    button#logoutButton(onclick="logoutRedirect()") Logout
-    button#viewProduction(onclick="viewProduction()") View Production
-  div#jobsContainer
-    each job in jobs
-      div(id=`${job.job_name}Container`, class="jobContainer")
-        div.jobHeaderContainer
-          h2.jobHeader #{job.job_name}
-          img(src="/images/icons/download_blue.png", onclick=`window.location.href='http://192.168.86.36:3000/prints/${job.job_name}/prints.pdf'`).downloadIcon
-        div.pageLinks
-          each page in job.pages
-           a(href=`../input/${job.job_name}/${page}`).pageLink SH#{page}
-  div#weekProductionContainer
-    h1#weeklyBoresHeader.weeklyHeader Weekly Bores -
-    table#weeklyBoresTable.weeklyTable
+  h1 #{crewName}
+  div#controlsContainer
+    input(type="date", name="startDate")#startDateInput.controlInput
+    input(type="date", name="endDate")#endDateInput.controlInput
+    input(type="text", name="filterJob")#filterJobInput.controlInput
+    input(type="text", name="filterCrew")#filterCrewInput.controlInput
+    label(for="startDate")#startDateLabel.controlLabel Start Date
+    label(for="endDate")#endDateLabel.controlLabel End Date
+    label(for="filterJob")#filterJobLabel.controlLabel Filter Jobs
+    label(for="filterCrew")#filterCrewLabel.controlLabel Filter Crews
+  div#totalsContainer
+    h2#totalBoresHeader.totalHeader Total Bore:
+    h2#totalRocksHeader.totalHeader Total Rock:
+    h2#totalVaultsHeader.totalHeader Total Vaults:
+    h3#totalBoresValue.totalValue 500ft
+    h3#totalRocksValue.totalValue 300ft
+    h3#totalVaultsValue.totalValue 20 / 3 / 2
+  div#tablesContainer
+    table#boresTable
       tr
         th Footage
         th Crew
         th Job Name
         th SH#
         th Work Date
-      each bore in bores
+      for bore in bores
         tr
           td #{bore.footage}ft
           td #{bore.crew_name}
@@ -34,15 +37,14 @@ block content
           td 
             a(href=`http://192.168.86.36:3000/input/${bore.job_name}/${bore.page_number}`) #{bore.page_number}
           td #{bore.work_date_formatted}
-    h1#weeklyRocksHeader.weeklyHeader Weekly Rocks -
-    table#weeklyRocksTable.weeklyTable
+    table#rocksTable
       tr
         th Footage
         th Crew
         th Job Name
         th SH#
         th Work Date
-      each rock in rocks
+      for rock in rocks
         tr
           td #{rock.footage}ft
           td #{rock.crew_name}
@@ -50,15 +52,14 @@ block content
           td 
             a(href=`http://192.168.86.36:3000/input/${rock.job_name}/${rock.page_number}`) #{rock.page_number}
           td #{rock.work_date_formatted}
-    h1#weeklyVaultsHeader.weeklyHeader Weekly Vaults -
-    table#weeklyVaultsTable.weeklyTable
+    table#vaultsTable
       tr
         th Vault Size
         th Crew
         th Job Name
         th SH#
         th Work Date
-      each vault in vaults
+      for vault in vaults
         tr
           td #{vault.vault_size_formatted}
           td #{vault.crew_name}
@@ -68,4 +69,4 @@ block content
           td #{vault.work_date_formatted}
 
 block scripts
-  script(src="/scripts/viewJobs.js")
+  script(src="/scripts/viewProduction.js")
