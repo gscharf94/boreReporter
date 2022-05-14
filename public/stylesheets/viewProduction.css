@@ -2,6 +2,36 @@ html {
   background-color: #d5d5d5;
 }
 
+#headerContainer {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  margin-bottom: 2ch;
+}
+
+#crewNameHeader {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: right;
+  font-size: 4ch;
+}
+
+#goBackButton {
+  margin-left: 2ch;
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: left;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 2ch;
+  border-radius: 15px;
+  height: fit-content;
+  font-weight: bold;
+  align-self: center;
+  color: white;
+  background-color: red;
+}
+
 td,
 th {
   font-family: "Fira Mono";

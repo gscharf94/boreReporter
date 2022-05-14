@@ -4,12 +4,14 @@ block style
   link(rel="stylesheet", href="/stylesheets/viewProduction.css")
 
 block content
-  h1 #{crewName}
+  div#headerContainer
+    h1#crewNameHeader #{crewName}
+    button(onclick="goBack()")#goBackButton Go Back
   div#controlsContainer
-    input(type="date", name="startDate")#startDateInput.controlInput
-    input(type="date", name="endDate")#endDateInput.controlInput
-    input(type="text", name="filterJob")#filterJobInput.controlInput
-    input(type="text", name="filterCrew")#filterCrewInput.controlInput
+    input(type="date", name="startDate", onchange="filterItems()")#startDateInput.controlInput
+    input(type="date", name="endDate", onchange="filterItems()")#endDateInput.controlInput
+    select(name="filterJob", oninput="filterItems()")#filterJobInput.controlInput
+    select(name="filterCrew", oninput="filterItems()")#filterCrewInput.controlInput
     label(for="startDate")#startDateLabel.controlLabel Start Date
     label(for="endDate")#endDateLabel.controlLabel End Date
     label(for="filterJob")#filterJobLabel.controlLabel Filter Jobs
@@ -18,9 +20,9 @@ block content
     h2#totalBoresHeader.totalHeader Total Bore:
     h2#totalRocksHeader.totalHeader Total Rock:
     h2#totalVaultsHeader.totalHeader Total Vaults:
-    h3#totalBoresValue.totalValue 500ft
-    h3#totalRocksValue.totalValue 300ft
-    h3#totalVaultsValue.totalValue 20 / 3 / 2
+    h3#totalBoresValue.totalValue
+    h3#totalRocksValue.totalValue
+    h3#totalVaultsValue.totalValue
   div#tablesContainer
     table#boresTable
       tr
