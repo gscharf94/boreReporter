@@ -178,15 +178,26 @@ function deleteBore(workDate, crewName, footage, points, rock) {
 
 function deleteSavedBore(id, rock) {
   let tmpArray = [];
-  for (const bore of savedBores) {
-    if (id == bore.id) {
-      map.removeLayer(bore.line);
-    } else {
-      tmpArray.push(bore);
+  if (rock) {
+    for (const rock of savedRocks) {
+      if (id == rock.id) {
+        map.removeLayer(rock.line);
+      } else {
+        tmpArray.push(rock);
+      }
     }
+    savedRocks = tmpArray;
+  } else {
+    for (const bore of savedBores) {
+      if (id == bore.id) {
+        map.removeLayer(bore.line);
+      } else {
+        tmpArray.push(bore);
+      }
+    }
+    savedBores = tmpArray;
   }
 
-  savedBores = tmpArray;
   let obj = {
     type: "bore",
     id: id,
@@ -309,6 +320,7 @@ function drawSavedVaults() {
 function drawSavedRocks() {
   for (const bore of savedRocks) {
     let line = L.polyline(bore.position, { color: "pink", weight: 4, dashArray: "8 8" });
+    bore.line = line;
     line.bindPopup(generateBorePopupHTML(bore.work_date, bore.crew_name, bore.footage, true, bore.id, bore.position));
     line.addTo(map);
     savedLines.push(line);
