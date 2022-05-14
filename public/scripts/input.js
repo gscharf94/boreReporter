@@ -57,7 +57,7 @@ let xIcon = L.icon({
   iconAnchor: [10, 10],
 });
 
-let iconList = [dt20Icon, dt30Icon, dt36Icon, questionIcon, xIcon];
+let iconList = [dt20Icon, dt30Icon, dt36Icon, questionIcon];
 
 let currentBore = 0;
 
@@ -299,7 +299,8 @@ function generateBorePopupHTML(workDate, boreCrewName, footage, rock, boreId, po
 
 function drawSavedBores() {
   for (const bore of savedBores) {
-    let line = L.polyline(bore.position, { color: "red", weight: 7 });
+    let lineColor = (crewName == bore.crew_name) ? "blue" : "#ffa500";
+    let line = L.polyline(bore.position, { color: lineColor, weight: 7 });
     bore.line = line;
     line.bindPopup(generateBorePopupHTML(bore.work_date, bore.crew_name, bore.footage, false, bore.id, bore.position));
     line.addTo(map);
@@ -319,7 +320,8 @@ function drawSavedVaults() {
 
 function drawSavedRocks() {
   for (const bore of savedRocks) {
-    let line = L.polyline(bore.position, { color: "pink", weight: 4, dashArray: "8 8" });
+    let lineColor = (crewName == bore.crew_name) ? "green" : "red";
+    let line = L.polyline(bore.position, { color: lineColor, weight: 5, dashArray: "8 8" });
     bore.line = line;
     line.bindPopup(generateBorePopupHTML(bore.work_date, bore.crew_name, bore.footage, true, bore.id, bore.position));
     line.addTo(map);
@@ -649,6 +651,50 @@ function sendPost() {
   submittedMarkers = [];
   submittedBores = [];
 }
+
+map.on('zoomend', () => {
+  let zoomLevel = map.getZoom();
+  for (const icon of iconList) {
+    if (zoomLevel == 3) {
+      icon.options.iconSize = [12, 12];
+      icon.options.iconAnchor = [6, 6];
+    } else if (zoomLevel == 4) {
+      icon.options.iconSize = [16, 16];
+      icon.options.iconAnchor = [8, 8];
+    } else if (zoomLevel == 5) {
+      icon.options.iconSize = [20, 20];
+      icon.options.iconAnchor = [10, 10];
+    } else if (zoomLevel == 6) {
+      icon.options.iconSize = [30, 30];
+      icon.options.iconAnchor = [15, 15];
+    } else if (zoomLevel == 7) {
+      icon.options.iconSize = [40, 40];
+      icon.options.iconAnchor = [20, 20];
+    }
+  }
+
+  if (currentMarker !== 0) {
+    currentMarker.setIcon(questionIcon);
+  }
+
+  for (const vault of savedVaults) {
+    let vTrans = {
+      0: dt20Icon,
+      1: dt30Icon,
+      2: dt36Icon,
+    };
+    vault.marker.setIcon(vTrans[vault.vault_size]);
+  }
+
+  for (const vault of postedVaults) {
+    let vTrans = {
+      "DT20": dt20Icon,
+      "DT30": dt30Icon,
+      "DT36": dt36Icon,
+    };
+    vault.marker.setIcon(vTrans[vault.size]);
+  }
+})
 
 // map.on('zoomend', () => {
 //   let zoomLevel = map.getZoom();
