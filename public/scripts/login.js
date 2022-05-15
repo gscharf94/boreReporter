@@ -31,4 +31,20 @@ function redirectIfLoggedIn() {
   }
 }
 
+function setOnEnter() {
+  let username = document.getElementById('usernameInput');
+  let password = document.getElementById('passwordInput');
+
+  let eles = [username, password];
+
+  for (const ele of eles) {
+    ele.addEventListener("keypress", (event) => {
+      if (event.key === "Enter") {
+        document.getElementById('submit').click();
+      }
+    })
+  }
+}
+
 redirectIfLoggedIn();
+setOnEnter();

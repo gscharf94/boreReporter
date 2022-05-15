@@ -28,27 +28,35 @@ button {
 }
 
 #usernameInput {
-  grid-row: 1;
+  grid-row: 2;
   grid-column: 2;
 }
 
 #usernameLabel {
-  grid-row: 1;
+  grid-row: 2;
   grid-column: 1;
 }
 
 #passwordInput {
-  grid-row: 2;
+  grid-row: 3;
   grid-column: 2;
 }
 
 #passwordLabel {
-  grid-row: 2;
+  grid-row: 3;
   grid-column: 1;
 }
 
 #submit {
-  grid-row: 3;
+  grid-row: 4;
   grid-column: 1 / span 2;
   width: 100%;
+}
+
+#logo {
+  grid-row: 1;
+  grid-column: 1 / span 2;
+  max-width: 40vw;
+  justify-self: center;
+  margin-bottom: 3vh;
 }
