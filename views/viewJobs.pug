@@ -13,7 +13,7 @@ block content
       div(id=`${job.job_name}Container`, class="jobContainer")
         div.jobHeaderContainer
           h2.jobHeader #{job.job_name}
-          img(src="/images/icons/download_blue.png", onclick=`window.location.href='http://192.168.86.36:3000/prints/${job.job_name}.pdf'`).downloadIcon
+          img(src="/images/icons/download_blue.png", onclick=`window.location.href='http://fiber1report.com/prints/${job.job_name}.pdf'`).downloadIcon
         div.pageLinks
           each page in job.pages
            a(href=`../input/${job.job_name}/${page}`).pageLink SH#{page}
@@ -32,7 +32,7 @@ block content
           td #{bore.crew_name}
           td #{bore.job_name}
           td 
-            a(href=`http://192.168.86.36:3000/input/${bore.job_name}/${bore.page_number}`) #{bore.page_number}
+            a(href=`http://fiber1report.com/input/${bore.job_name}/${bore.page_number}`) #{bore.page_number}
           td #{bore.work_date_formatted}
     h1#weeklyRocksHeader.weeklyHeader Weekly Rocks -
     table#weeklyRocksTable.weeklyTable
@@ -48,7 +48,7 @@ block content
           td #{rock.crew_name}
           td #{rock.job_name}
           td 
-            a(href=`http://192.168.86.36:3000/input/${rock.job_name}/${rock.page_number}`) #{rock.page_number}
+            a(href=`http://fiber1report.com/input/${rock.job_name}/${rock.page_number}`) #{rock.page_number}
           td #{rock.work_date_formatted}
     h1#weeklyVaultsHeader.weeklyHeader Weekly Vaults -
     table#weeklyVaultsTable.weeklyTable
@@ -64,7 +64,7 @@ block content
           td #{vault.crew_name}
           td #{vault.job_name}
           td 
-            a(href=`http://192.168.86.36:3000/input/${vault.job_name}/${vault.page_number}`) #{vault.page_number}
+            a(href=`http://fiber1report.com/input/${vault.job_name}/${vault.page_number}`) #{vault.page_number}
           td #{vault.work_date_formatted}
 
 block scripts

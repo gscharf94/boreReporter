@@ -18,7 +18,7 @@ function checkCredentials() {
 
   if (correctCredentials) {
     document.cookie = `username=${username}; path=/`;
-    window.location.replace('http://192.168.86.36:3000/viewJobs');
+    window.location.replace('http://fiber1report.com/viewJobs');
   } else {
     alert('incorrect username or password');
   }
@@ -27,7 +27,7 @@ function checkCredentials() {
 function redirectIfLoggedIn() {
   let cookie = document.cookie;
   if (cookie.split("=")[0] == "username") {
-    window.location.replace('http://192.168.86.36:3000/viewJobs');
+    window.location.replace('http://fiber1report.com/viewJobs');
   }
 }
 

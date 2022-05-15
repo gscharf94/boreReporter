@@ -16,7 +16,7 @@ savedRocks = parseJumbledJSON(savedRocks);
 let renderer = L.canvas({ padding: 0.1, tolerance: 5 });
 
 let map = L.map('map').setView([65, -46], 3);
-L.tileLayer('http://192.168.86.36:3000/images/{job}/{page}/{z}/{x}/{y}.jpg', {
+L.tileLayer('http://fiber1report.com/images/{job}/{page}/{z}/{x}/{y}.jpg', {
   attribution: `${jobName} - SH${pageId}`,
   maxZoom: 7,
   minZoom: 2,
@@ -96,7 +96,7 @@ drawSavedRocks();
 function checkLogin() {
   if (crewName == undefined) {
     alert('you are logged out, please log back in');
-    window.location.href = "http://192.168.86.36:3000";
+    window.location.href = "http://fiber1report.com";
   }
 }
 
@@ -242,10 +242,10 @@ function deleteVault(workDate, crewName, vaultSize, position) {
 function goBack() {
   if (currentLine !== 0 || currentMarker !== 0) {
     if (confirm('Are you sure you want to go back? There are unsubmitted bores/vaults.')) {
-      window.location.href = "http://192.168.86.36:3000/viewJobs";
+      window.location.href = "http://fiber1report.com/viewJobs";
     }
   } else {
-    window.location.href = "http://192.168.86.36:3000/viewJobs";
+    window.location.href = "http://fiber1report.com/viewJobs";
   }
 }
 
@@ -639,7 +639,7 @@ function sendRequest(body, url) {
   body.marker = undefined;
 
   let req = new XMLHttpRequest();
-  req.open("POST", `http://192.168.86.36:3000/${url}`);
+  req.open("POST", `http://fiber1report.com/${url}`);
   req.setRequestHeader("Content-Type", "application/json");
   req.send(JSON.stringify(body));
 }

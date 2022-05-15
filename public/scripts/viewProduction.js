@@ -103,7 +103,7 @@ function getSelectValues() {
 }
 
 function goBack() {
-  window.location.href = `http://192.168.86.36:3000/viewJobs`;
+  window.location.href = `http://fiber1report.com/viewJobs`;
 }
 
 

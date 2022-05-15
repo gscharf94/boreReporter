@@ -7,7 +7,7 @@ function setUsernameHeader() {
 function logoutRedirect() {
   let username = document.cookie.split("=")[1];
   document.cookie = `username=${username}; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-  window.location.replace("http://192.168.86.36:3000/");
+  window.location.replace("http://fiber1report.com");
 }
 
 function parseJumbledJSON(txt) {
@@ -125,7 +125,7 @@ function thisWeek(dateStr) {
 
 function viewProduction() {
   let loggedInCrew = document.cookie.split("=")[1];
-  window.location.href = `http://192.168.86.36:3000/viewProduction/${loggedInCrew}`;
+  window.location.href = `http://fiber1report.com/viewProduction/${loggedInCrew}`;
 }
 
 setUsernameHeader();
