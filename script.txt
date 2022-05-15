@@ -1,0 +1,113 @@
+script
+
+
+hello i've created a system to hopefully better manage production. employees and contractors working for Fiber 1 can report daily updates and view their production later. this way there will be less margin for error, and invoices sent to Fiber 1 will have to match this figure
+
+first, go to fiber1report.com 
+
+we are greeted with a login screen. every employee or contractor will have a username and password created for them. let's log in as Carol in order to demonstrate the system
+
+here is the main overview page, where you can see every job, including the weekly production
+
+next to each job header, there is a link to download the print pdf for the job. [click download for T650W]
+
+in addition, each job is composed of pages. let's check out SH2 of T650W
+
+as we can see, there is an orange line on the map on the eastern side of the road. if we click on the bores, we can see who completed the bore [click top bore] this bore was 627ft completed by Jhonny on may 12th
+
+[click bottom jhonny] the bore on the bottom was 679ft and also done by jhonny on the day after
+
+[click culdesac] if we click the culdesac, we can see that the missile crew finished up this curve on the 11th
+
+----
+
+now, let's say we are Carol and we finished up some crossings today on this job. we want to report them. we would click the "add bore" button [click add bore]
+
+[create bore with 3 or 4 points]
+
+here we can place points on the map, indicating the bounds of our bore. each point can be moved around before the bore is submitted. a bore can be made up of many points
+
+notice how the bore we created is blue, while the other ones are orange. each crew sees their own bores in blue, and everyone else's bores in orange. this way they can know which bores belong to them at a glance
+
+if we want to delete the bore before being submitted, we can just press the cancel button. this does not save any information [press cancel]
+
+[create another bore]
+
+once we have finished placed our bore on the map, we need to declare the footage. let's say this bore was 300ft [type in 300ft into input]
+
+next, we need to declare the date this bore was done. by default, the date input will always show the current date. if we want to change that, we just click and select a new date [select a different date, april 16]
+
+once we have finished inputting the bore position, footage, and work date, we can hit the green "submit" button to send that information to the database [ hit submit ]
+
+
+there is a confirmation page and we can see now we can longer edit our bore. once it is submitted it cannot be edited, only deleted. to delete the bore, we select the bore and then hit the delete button. [ delete bore ]
+
+note that we cannot delete just any bore - a crew can only delete bores that belong to themselves. if they try to delete a bore from another crew, the website throws an error [ try to delete jhonny's bore ]
+
+let's create some bores
+
+[create 3 bores on the top part of page ]
+
+here we have created 3 crossings. in addition to the crossing, we installed 4 vaults. 3 DT20s and 1 DT30
+
+we can place vaults using the "add vault" button. [click add vault]
+
+when we add a vault, it will show up a question mark until it is submitted. you can drag around the question mark to change the location. just like with the bore, if you press cancel it deletes without savings [click cancel]
+
+[create new vault] we select the size of the vault on the bottom left by selecting from the drop down menu. there are three options, DT20 being the smallest. let's select DT20
+
+[select DT20, place 1 of them on the left side of road]
+
+just like the bore, there is also an input option for date. the default is for today, so we can leave it at that
+
+once we are satisfied with the location and made sure we selected the correct size and date, we click submit. once we submit, the icon for the vault changes and the location is no longer able to be changed. each vault has a different color
+
+let's report the remaining 3 vaults
+
+[place two more DT20s and one DT30 on right side of road]
+
+let's place our remaining 3 vaults
+
+now we just have one more bore to submit, however that bore had a section of rock. first, we place the regular bore over the whole section [place 150ft bore crossing at the bottom]
+
+next we need to place the rock over the section of bore. let's say we had 100ft of rock. we click add rock [click add rock]
+
+it works the same way as "add bore", except the line is green and dashed in order to differentiate. let's place it over the original bore [create 100ft of rock]
+
+now we have submitted all the work done today into the system. let's go back to the home page. we can click the "go back" button. [click go back]
+
+as we can see at the bottom, the weekly production has updated to show the bores we submitted. these tables show only the current week. 
+
+they are totaled so any crew can know what they have reported on that week.
+
+the vaults are listed from smallest to biggest, along with a total
+
+one final feature is the View Production screen, which shows all production done by the logged in crew. [click view production]
+
+here there are various options. we can select by date range. so for example let's say we only want to know what production we reported in april. we change the start date to april 1st and the end date to april 30th. 
+
+the tables get automatically repopulated and the totals at the top get updated as well. [clear both dates]
+
+we can also filter by job [click job filter select and select T648W] and see the totals for each job separately
+
+each row also has a link to the relevant page. so for example, if we wanted to see the page for this 123ft bore [click SH2 link] we just click the SH2 hyperlink and that will bring us to the appropriate input page
+
+[select bore to show it has data]
+
+---
+
+there are also admin accounts, which have access to all crew information. let's logout and log into Ani's account
+
+[logout and log into ani]
+
+Ani here can still view all the jobs and maps, however when we click View Production [click view production]
+
+we will see at the top of the screen there is the ADMIN title. this means that Ani is able to see all the production for the entire company. Just like before, she is able to filter by job [filter by a couple jobs] and dates [select random dates]
+
+but she is also able to filter by crew [select Jhonny and select a couple different jobs]
+
+---
+
+those are all the features of fiber1report.com
+
+i plan to add additional features as we move forward, but I hope that this can help us stay better organized as a company. 
