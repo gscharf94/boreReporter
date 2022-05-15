@@ -25,6 +25,9 @@ def create_tiles(job_name, page_id):
     save_tiles(im_quadruple, 7, tile_size, job_name, page_id)
 
 
+HELLO WORLD
+
+
 def create_folders(job_name, x_splits, zoom_level, page_id):
     job_folder = "/home/gustavo/Documents/programming_stuff/map_stuff/public/images/" + job_name
     try:
