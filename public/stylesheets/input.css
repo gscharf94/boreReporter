@@ -23,7 +23,7 @@ html {
   grid-column: 1;
   grid-row: 2;
   align-self: flex-end;
-  font-size: 2ch;
+  font-size: 3ch;
   color: black;
   font-weight: bold;
   visibility: hidden;
@@ -36,7 +36,7 @@ html {
 
 #vaultType {
   width: 130px;
-  font-size: 2ch;
+  font-size: 3ch;
   grid-column: 1;
   grid-row: 3;
   background-color: gray;
