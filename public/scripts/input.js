@@ -101,7 +101,7 @@ function checkLogin() {
 }
 
 function formatDate(dateStr) {
-  date = new Date(dateStr);
+  date = new Date(`${dateStr}`);
   let day = date.getDate();
   let month = date.getMonth() + 1;
   let year = date.getFullYear();
@@ -145,7 +145,6 @@ function deleteBore(workDate, crewName, footage, points, rock) {
     if (bore.points.length == parsedPoints.length) {
       let equal = true;
       for (let i = 0; i < parsedPoints.length; i++) {
-        console.log(`comparing ${bore.points[i]} v ${parsedPoints[i]}`);
         if (bore.points[i][0] !== parsedPoints[i][0] || bore.points[i][1] !== parsedPoints[i][1]) {
           equal = false;
           break;
@@ -448,10 +447,10 @@ function addRock() {
   document.getElementById('addBore').style.backgroundColor = "#616161";
 }
 
-function getDate() {
+function getDateInput() {
   let dateInput = document.getElementById('dateInput');
   let val = dateInput.value;
-  return new Date(val);
+  return new Date(`${val}T00:00:00`);
 }
 
 function finishPlacing() {
@@ -472,7 +471,7 @@ function finishPlacing() {
         position: currentMarker.getLatLng(),
         size: trans[typeOfBox],
         marker: currentMarker,
-        workDate: getDate(),
+        workDate: getDateInput(),
       };
       let pos = [vault.position.lat, vault.position.lng];
       currentMarker.bindPopup(generateVaultPopupHTML(new Date(), crewName, typeOfBox, -1, pos));
@@ -727,25 +726,4 @@ map.on('zoomend', () => {
   }
 })
 
-// map.on('zoomend', () => {
-//   let zoomLevel = map.getZoom();
-//   console.log(`zoomlevel: ${zoomLevel}`);
-//   if (zoomLevel == 5 || zoomLevel == 6) {
-//     console.log('this happens..');
-//     dt20Icon.options.iconSize = [25, 25];
-//     dt20Icon.options.iconAnchor = [12, 12];
-//   }
-//   if (zoomLevel == 3 || zoomLevel == 4) {
-//     dt20Icon.options.iconSize = [12, 12];
-//     dt20Icon.options.iconAnchor = [6, 6];
-//   }
-
-//   if (zoomLevel == 7) {
-//     dt20Icon.options.iconSize = [60, 60];
-//     dt20Icon.options.iconAnchor = [30, 30];
-//   }
-//   for (const marker of savedMarkers) {
-//     marker.setIcon(dt20Icon);
-//   }
-// });
 map.on('click', (event) => clickHandler(event));

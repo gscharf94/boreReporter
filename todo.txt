@@ -47,3 +47,5 @@ ________
   "show bores only done by crew" something like that to cut down on visual clutter
 
 -̶ ̶a̶d̶d̶ ̶d̶a̶t̶e̶ ̶s̶e̶l̶e̶c̶t̶o̶r̶ ̶t̶o̶ ̶i̶n̶p̶u̶t̶ ̶s̶o̶ ̶t̶h̶a̶t̶ ̶p̶e̶o̶p̶l̶e̶ ̶c̶a̶n̶ ̶i̶n̶p̶u̶t̶ ̶t̶h̶i̶n̶g̶s̶ ̶f̶r̶o̶m̶ ̶p̶r̶e̶v̶i̶o̶u̶s̶ ̶d̶a̶y̶s̶
+
+-̶ ̶i̶n̶c̶r̶e̶a̶s̶e̶ ̶t̶o̶l̶e̶r̶a̶n̶c̶e̶ ̶t̶o̶ ̶m̶a̶k̶e̶ ̶i̶t̶ ̶e̶a̶s̶i̶e̶r̶ ̶t̶o̶ ̶c̶l̶i̶c̶k̶ ̶o̶n̶ ̶m̶o̶b̶i̶l̶e̶
