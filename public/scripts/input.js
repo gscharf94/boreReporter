@@ -474,7 +474,7 @@ function finishPlacing() {
         workDate: getDateInput(),
       };
       let pos = [vault.position.lat, vault.position.lng];
-      currentMarker.bindPopup(generateVaultPopupHTML(new Date(), crewName, typeOfBox, -1, pos));
+      currentMarker.bindPopup(generateVaultPopupHTML(getDateInput(), crewName, typeOfBox, -1, pos));
       submittedMarkers.push(vault);
       currentMarker = 0;
 
@@ -516,14 +516,14 @@ function finishPlacing() {
         boreType: boreType,
         line: currentLine,
         id: -1,
-        workDate: getDate(),
+        workDate: getDateInput(),
       };
       submittedBores.push(bore);
       for (const marker of currentLineMarkers) {
         map.removeLayer(marker);
       }
 
-      currentLine.bindPopup(generateBorePopupHTML(new Date(), crewName, footage, addingRock, -1, bore.points));
+      currentLine.bindPopup(generateBorePopupHTML(getDateInput(), crewName, footage, addingRock, -1, bore.points));
 
       currentLine = 0;
       currentLineMarkers = [];
