@@ -8,7 +8,7 @@
 ___________
 
 -̶ ̶c̶h̶e̶c̶k̶ ̶u̶s̶e̶r̶n̶a̶m̶e̶ ̶b̶e̶f̶o̶r̶e̶ ̶d̶e̶l̶e̶t̶i̶n̶g̶ ̶i̶t̶e̶m̶
-- decide whether to show everything to everyone or just their own stuff (I think only admin will be able to see everything)
+-̶ ̶d̶e̶c̶i̶d̶e̶ ̶w̶h̶e̶t̶h̶e̶r̶ ̶t̶o̶ ̶s̶h̶o̶w̶ ̶e̶v̶e̶r̶y̶t̶h̶i̶n̶g̶ ̶t̶o̶ ̶e̶v̶e̶r̶y̶o̶n̶e̶ ̶o̶r̶ ̶j̶u̶s̶t̶ ̶t̶h̶e̶i̶r̶ ̶o̶w̶n̶ ̶s̶t̶u̶f̶f̶ ̶(̶I̶ ̶t̶h̶i̶n̶k̶ ̶o̶n̶l̶y̶ ̶a̶d̶m̶i̶n̶ ̶w̶i̶l̶l̶ ̶b̶e̶ ̶a̶b̶l̶e̶ ̶t̶o̶ ̶s̶e̶e̶ ̶e̶v̶e̶r̶y̶t̶h̶i̶n̶g̶)̶
 -̶ ̶a̶d̶d̶ ̶d̶e̶l̶e̶t̶e̶ ̶b̶o̶r̶e̶ ̶(̶s̶o̶r̶t̶ ̶o̶f̶ ̶d̶o̶n̶e̶.̶ ̶s̶a̶v̶e̶d̶ ̶b̶o̶r̶e̶s̶ ̶c̶a̶n̶ ̶b̶e̶ ̶d̶e̶l̶e̶t̶e̶d̶.̶.̶ ̶n̶o̶t̶ ̶c̶u̶r̶r̶e̶n̶t̶ ̶o̶n̶e̶s̶)̶
 O̶H̶ ̶S̶H̶I̶T̶ ̶I̶ ̶D̶I̶D̶ ̶N̶O̶T̶ ̶D̶O̶ ̶T̶H̶I̶S̶ ̶(̶n̶o̶w̶ ̶i̶ ̶d̶i̶d̶ ̶8̶)̶ ̶)̶
 
@@ -34,8 +34,16 @@ ________
 
 -̶ ̶c̶r̶e̶a̶t̶e̶ ̶a̶d̶m̶i̶n̶ ̶a̶c̶c̶o̶u̶n̶t̶s̶
 
-- redo the zoom for the icons
+-̶ ̶r̶e̶d̶o̶ ̶t̶h̶e̶ ̶z̶o̶o̶m̶ ̶f̶o̶r̶ ̶t̶h̶e̶ ̶i̶c̶o̶n̶s̶
 
-- redo the colors/weights for bores.. decide whether different people get different colors (probably not)
+-̶ ̶r̶e̶d̶o̶ ̶t̶h̶e̶ ̶c̶o̶l̶o̶r̶s̶/̶w̶e̶i̶g̶h̶t̶s̶ ̶f̶o̶r̶ ̶b̶o̶r̶e̶s̶.̶.̶ ̶d̶e̶c̶i̶d̶e̶ ̶w̶h̶e̶t̶h̶e̶r̶ ̶d̶i̶f̶f̶e̶r̶e̶n̶t̶ ̶p̶e̶o̶p̶l̶e̶ ̶g̶e̶t̶ ̶d̶i̶f̶f̶e̶r̶e̶n̶t̶ ̶c̶o̶l̶o̶r̶s̶ ̶(̶p̶r̶o̶b̶a̶b̶l̶y̶ ̶n̶o̶t̶)̶
 
 - add <- and -> page links in inputBore
+
+05-14
+________
+
+- add "hide bores" "hide rocks" "hide vaults"
+  "show bores only done by crew" something like that to cut down on visual clutter
+
+-̶ ̶a̶d̶d̶ ̶d̶a̶t̶e̶ ̶s̶e̶l̶e̶c̶t̶o̶r̶ ̶t̶o̶ ̶i̶n̶p̶u̶t̶ ̶s̶o̶ ̶t̶h̶a̶t̶ ̶p̶e̶o̶p̶l̶e̶ ̶c̶a̶n̶ ̶i̶n̶p̶u̶t̶ ̶t̶h̶i̶n̶g̶s̶ ̶f̶r̶o̶m̶ ̶p̶r̶e̶v̶i̶o̶u̶s̶ ̶d̶a̶y̶s̶

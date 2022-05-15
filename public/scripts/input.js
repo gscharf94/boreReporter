@@ -335,6 +335,15 @@ function clearInputs() {
 
   let vaultInput = document.getElementById('vaultType');
   vaultInput.value = -1;
+
+  let dateInput = document.getElementById('dateInput');
+  let currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0);
+
+  let day = String(currentDate.getDate()).padStart(2, "0");
+  let month = String(currentDate.getMonth() + 1).padStart(2, "0");
+  let year = currentDate.getFullYear();
+  dateInput.value = `${year}-${month}-${day}`;
 }
 
 function parseJumbledJSON(txt) {
@@ -352,6 +361,9 @@ function setInputsHidden() {
   for (const ele of arr) {
     ele.style.visibility = "hidden";
   }
+
+  let dateInput = document.getElementById('dateInput');
+  dateInput.style.visibility = "hidden";
 }
 
 function toggleInputVisibility(option) {
@@ -379,6 +391,13 @@ function toggleInputVisibility(option) {
     } else {
       ele.style.visibility = "hidden";
     }
+  }
+
+  let dateInput = document.getElementById('dateInput');
+  if (dateInput.style.visibility == "hidden") {
+    dateInput.style.visibility = "visible";
+  } else if (dateInput.style.visibility == "visible") {
+    dateInput.style.visibility = "hidden";
   }
 }
 
@@ -428,6 +447,12 @@ function addRock() {
   document.getElementById('addBore').style.backgroundColor = "#616161";
 }
 
+function getDate() {
+  let dateInput = document.getElementById('dateInput');
+  let val = dateInput.value;
+  return new Date(val);
+}
+
 function finishPlacing() {
   checkLogin();
   if (currentMarker != 0) {
@@ -446,6 +471,7 @@ function finishPlacing() {
         position: currentMarker.getLatLng(),
         size: trans[typeOfBox],
         marker: currentMarker,
+        workDate: getDate(),
       };
       let pos = [vault.position.lat, vault.position.lng];
       currentMarker.bindPopup(generateVaultPopupHTML(new Date(), crewName, typeOfBox, -1, pos));
@@ -490,6 +516,7 @@ function finishPlacing() {
         boreType: boreType,
         line: currentLine,
         id: -1,
+        workDate: getDate(),
       };
       submittedBores.push(bore);
       for (const marker of currentLineMarkers) {
@@ -602,6 +629,7 @@ function undoButton() {
   document.getElementById('vaultType').style.visibility = "hidden";
   document.getElementById('footageInputLabel').style.visibility = "hidden";
   document.getElementById('footageInput').style.visibility = "hidden";
+  document.getElementById('dateInput').style.visibility = "hidden";
 }
 
 
@@ -626,6 +654,7 @@ function sendPost() {
       crew: crewName,
       pageNumber: pageId,
       marker: vault.marker,
+      workDate: vault.workDate,
     };
     let reqObj = { ...postObj }
     sendRequest(reqObj, "inputData");
@@ -642,6 +671,7 @@ function sendPost() {
       pageNumber: pageId,
       boreType: bore.boreType,
       line: bore.line,
+      workDate: bore.workDate,
     }
     let reqObj = { ...postObj };
     sendRequest(reqObj, "inputData");

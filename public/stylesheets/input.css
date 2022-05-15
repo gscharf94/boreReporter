@@ -23,7 +23,7 @@ html {
   grid-column: 1;
   grid-row: 2;
   align-self: flex-end;
-  font-size: 3ch;
+  font-size: 2ch;
   color: black;
   font-weight: bold;
   visibility: hidden;
@@ -36,14 +36,23 @@ html {
 
 #vaultType {
   width: 130px;
-  font-size: 4ch;
+  font-size: 2ch;
   grid-column: 1;
   grid-row: 3;
   background-color: gray;
   font-weight: bold;
   border: none;
-  height: 60px;
+  /* height: 60px; */
   visibility: hidden;
+}
+
+#dateInput {
+  grid-column: 1 / span 3;
+  align-self: center;
+  justify-self: center;
+  margin-top: 10px;
+  font-size: 2ch;
+  /* visibility: hidden; */
 }
 
 
@@ -108,7 +117,7 @@ button {
   justify-content: center;
   justify-self: right;
   align-items: center;
-  margin-top: 30px;
+  margin-top: 10px;
   background-color: #005400;
   color: white;
 }
@@ -120,7 +129,7 @@ button {
   justify-content: center;
   justify-self: right;
   align-items: center;
-  margin-top: 30px;
+  margin-top: 10px;
   background-color: #af0000;
   color: white;
 }
