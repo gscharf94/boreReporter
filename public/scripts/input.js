@@ -13,8 +13,9 @@ savedBores = parseJumbledJSON(savedBores);
 savedVaults = parseJumbledJSON(savedVaults);
 savedRocks = parseJumbledJSON(savedRocks);
 
+let renderer = L.canvas({ padding: 0.1, tolerance: 5 });
+
 let map = L.map('map').setView([65, -46], 3);
-// let map = L.map('map').fitWorld();
 L.tileLayer('http://192.168.86.36:3000/images/{job}/{page}/{z}/{x}/{y}.jpg', {
   attribution: `${jobName} - SH${pageId}`,
   maxZoom: 7,
@@ -300,7 +301,7 @@ function generateBorePopupHTML(workDate, boreCrewName, footage, rock, boreId, po
 function drawSavedBores() {
   for (const bore of savedBores) {
     let lineColor = (crewName == bore.crew_name) ? "blue" : "#ffa500";
-    let line = L.polyline(bore.position, { color: lineColor, weight: 7 });
+    let line = L.polyline(bore.position, { color: lineColor, weight: 7, renderer: renderer });
     bore.line = line;
     line.bindPopup(generateBorePopupHTML(bore.work_date, bore.crew_name, bore.footage, false, bore.id, bore.position));
     line.addTo(map);
@@ -321,7 +322,7 @@ function drawSavedVaults() {
 function drawSavedRocks() {
   for (const bore of savedRocks) {
     let lineColor = (crewName == bore.crew_name) ? "green" : "red";
-    let line = L.polyline(bore.position, { color: lineColor, weight: 5, dashArray: "8 8" });
+    let line = L.polyline(bore.position, { color: lineColor, weight: 5, dashArray: "8 8", renderer: renderer });
     bore.line = line;
     line.bindPopup(generateBorePopupHTML(bore.work_date, bore.crew_name, bore.footage, true, bore.id, bore.position));
     line.addTo(map);
@@ -557,7 +558,7 @@ function updatePolyline(color, weight, dashArray) {
   for (const marker of currentLineMarkers) {
     points.push(marker.getLatLng());
   }
-  currentLine = L.polyline(points, { color: color, weight: weight, dashArray: dashArray });
+  currentLine = L.polyline(points, { color: color, weight: weight, dashArray: dashArray, renderer: renderer });
   currentLine.addTo(map);
 }
 
