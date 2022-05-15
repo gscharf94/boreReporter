@@ -129,7 +129,7 @@ button {
   justify-content: center;
   justify-self: right;
   align-items: center;
-  margin-top: 10px;
+  /* margin-top: 10px; */
   background-color: #af0000;
   color: white;
 }

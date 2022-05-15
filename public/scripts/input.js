@@ -13,7 +13,7 @@ savedBores = parseJumbledJSON(savedBores);
 savedVaults = parseJumbledJSON(savedVaults);
 savedRocks = parseJumbledJSON(savedRocks);
 
-let renderer = L.canvas({ padding: 0.1, tolerance: 5 });
+let renderer = L.canvas({ padding: 0.1, tolerance: 15 });
 
 let map = L.map('map').setView([65, -46], 3);
 L.tileLayer('http://192.168.86.36:3000/images/{job}/{page}/{z}/{x}/{y}.jpg', {
@@ -54,8 +54,8 @@ let questionIcon = L.icon({
 
 let xIcon = L.icon({
   iconUrl: "/images/icons/x.png",
-  iconSize: [20, 20],
-  iconAnchor: [10, 10],
+  iconSize: [30, 30],
+  iconAnchor: [15, 15],
 });
 
 let iconList = [dt20Icon, dt30Icon, dt36Icon, questionIcon];
