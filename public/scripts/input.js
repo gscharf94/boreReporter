@@ -266,7 +266,7 @@ function generateVaultPopupHTML(workDate, vaultCrewName, vaultSize, vaultId, pos
       <h3 style="grid-column: 1;grid-row: 1;margin-top: 0;margin-bottom: 0;align-self: center;">${vaultCrewName}</h3>
       <h3 style="grid-column: 1;grid-row: 2;margin-top: 0;margin-bottom: 0;align-self: center;">${formatDate(workDate)}</h3>
       <h3 style="grid-column: 1;grid-row: 3;margin-top: 0;margin-bottom: 0;align-self: center;">${trans[vaultSize]}</h3>
-      <a style="grid-column: 2;grid-row:1;margin: auto;text-align: right;" href="#"><img style="width:30%;align-self: center;" src="/images/icons/small_edit.png">Edit</a>
+      <a style="visibility: hidden;grid-column: 2;grid-row:1;margin: auto;text-align: right;" href="#"><img style="width:30%;align-self: center;" src="/images/icons/small_edit.png">Edit</a>
       <a onclick="${deleteArgs}" style="grid-column: 2;grid-row:3;margin: auto;text-align: right;" href="#"><img style="width:30%;align-self: center;" src="/images/icons/small_delete.png" >Delete</a>
     </div>
   `
@@ -290,7 +290,7 @@ function generateBorePopupHTML(workDate, boreCrewName, footage, rock, boreId, po
       <h3 style="grid-column: 1; grid-row: 2;margin-top: 0;margin-bottom: 0;align-self: center;">${formatDate(workDate)}</h3>
       <h3 style="grid-column: 1; grid-row: 3;margin-top: 0;margin-bottom: 0;align-self: center;">${footage}ft</h3>
       <h3 style="grid-column: 1; grid-row: 4;margin-top: 0;margin-bottom: 0;align-self: center;">${(rock) ? "ROCK" : ""}</h3>
-      <a style="grid-column: 2;grid-row:1;margin: auto;text-align: right;" href="#"><img style="width:30%;align-self: center;" src="/images/icons/small_edit.png">Edit</a>
+      <a style="visibility: hidden; grid-column: 2;grid-row:1;margin: auto;text-align: right;" href="#"><img style="width:30%;align-self: center;" src="/images/icons/small_edit.png">Edit</a>
       <a onclick="${deleteArgs}" style="grid-column: 2;grid-row:3;margin: auto;text-align: right;" href="#"><img style="width:30%;align-self: center;" src="/images/icons/small_delete.png">Delete</a>
     </div>
   `
