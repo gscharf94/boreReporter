@@ -13,7 +13,7 @@ savedBores = parseJumbledJSON(savedBores);
 savedVaults = parseJumbledJSON(savedVaults);
 savedRocks = parseJumbledJSON(savedRocks);
 
-let renderer = L.canvas({ padding: 0.1, tolerance: 5 });
+let renderer = L.canvas({ padding: 0.1, tolerance: 15 });
 
 let map = L.map('map').setView([65, -46], 3);
 L.tileLayer('http://fiber1report.com/images/{job}/{page}/{z}/{x}/{y}.jpg', {
@@ -25,6 +25,60 @@ L.tileLayer('http://fiber1report.com/images/{job}/{page}/{z}/{x}/{y}.jpg', {
   tileSize: 256,
   noWrap: true,
 }).addTo(map);
+
+L.simpleMapScreenshoter().addTo(map);
+
+function createPopup(footage, latLng) {
+  let popup = L.popup({
+    closeButton: false,
+    className: 'asBuiltPopup',
+    autoClose: false,
+    autoPan: false,
+    closeOnClick: false,
+  })
+    .setLatLng(latLng)
+    .setContent(`<p class="asBuiltNumberHeader">${footage}'</p>`)
+    .openOn(map);
+  stylePopups();
+  makeDraggable(popup);
+  return popup;
+}
+
+function getAveragePoint(points) {
+  let totals = points.reduce((prev, curr) => {
+    return {
+      lat: prev.lat + curr.lat,
+      lng: prev.lng + curr.lng,
+    }
+  });
+
+  return {
+    lat: totals.lat / points.length,
+    lng: totals.lng / points.length,
+  };
+}
+
+function generateBoreLabels() {
+  let bores = [...savedBores, ...postedBores];
+  for (const bore of bores) {
+    console.log(bore);
+    let latLng = getAveragePoint(bore.line._latlngs);
+    latLng = [latLng.lat, latLng.lng];
+    bore.boreLabel = createPopup(bore.footage, latLng);
+  }
+}
+
+function makeDraggable(popup) {
+  let pos = map.latLngToLayerPoint(popup.getLatLng());
+  L.DomUtil.setPosition(popup._wrapper.parentNode, pos);
+  let draggable = new L.Draggable(popup._container, popup._wrapper);
+  draggable.enable();
+
+  draggable.on('dragend', function () {
+    let pos = map.layerPointToLatLng(this._newPos);
+    popup.setLatLng(pos);
+  });
+}
 
 map.attributionControl.setPrefix(false);
 
@@ -54,8 +108,8 @@ let questionIcon = L.icon({
 
 let xIcon = L.icon({
   iconUrl: "/images/icons/x.png",
-  iconSize: [20, 20],
-  iconAnchor: [10, 10],
+  iconSize: [30, 30],
+  iconAnchor: [15, 15],
 });
 
 let iconList = [dt20Icon, dt30Icon, dt36Icon, questionIcon];
@@ -76,6 +130,9 @@ let submittedRock = [];
 
 let postedBores = [];
 let postedVaults = [];
+
+let currentlyHidingVaults = false;
+let currentlyHidingBores = false;
 
 let trans = {
   0: 'DT20',
@@ -107,6 +164,14 @@ function formatDate(dateStr) {
   let year = date.getFullYear();
 
   return `${month}/${day}/${year}`;
+}
+
+function stylePopups() {
+  let popups = document.querySelectorAll('.asBuiltPopup>.leaflet-popup-content-wrapper>.leaflet-popup-content');
+  for (const ele of popups) {
+    ele.style.padding = "3px";
+    ele.style.width = "fit-content";
+  }
 }
 
 function deleteSavedVault(id) {
@@ -206,6 +271,36 @@ function deleteSavedBore(id, rock) {
 
   let reqObj = { ...obj }
   sendRequest(reqObj, "deleteData");
+}
+
+function toggleVaultVisibility() {
+  let vaults = [...savedVaults, ...postedVaults];
+  if (!currentlyHidingVaults) {
+    for (const vault of vaults) {
+      map.removeLayer(vault.marker);
+    }
+    currentlyHidingVaults = true;
+  } else {
+    for (const vault of vaults) {
+      vault.marker.addTo(map);
+    }
+    currentlyHidingVaults = false;
+  }
+}
+
+function toggleBoreVisibility() {
+  let bores = [...savedBores, ...postedBores];
+  if (!currentlyHidingBores) {
+    for (const bore of bores) {
+      map.removeLayer(bore.line);
+    }
+    currentlyHidingBores = true;
+  } else {
+    for (const bore of bores) {
+      bore.line.addTo(map);
+    }
+    currentlyHidingBores = false;
+  }
 }
 
 function deleteVault(workDate, crewName, vaultSize, position) {

@@ -34,6 +34,7 @@ router.get('/:jobName/:pageId', (req, res, next) => {
               AND rocks.job_name='${jobName}';`
               , (err, resp4) => {
                 let rocks = resp4.rows;
+                console.log(bores);
                 res.render('input',
                   {
                     jobs: jobs,
