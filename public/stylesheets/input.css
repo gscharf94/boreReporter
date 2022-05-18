@@ -174,8 +174,21 @@ button {
   cursor: pointer;
 }
 
-.totalsText {
+.totalsHeader,
+.totalsValue {
   font-size: 3ch;
   font-weight: bold;
-  width: fit-content;
+  font-family: "Fira Mono";
+}
+
+.totalsValue {
+  text-align: right;
+}
+
+.totalsBoreImage,
+.totalsVaultImage {
+  justify-self: center;
+  align-self: center;
+  padding: 3px;
+  margin-left: 10px;
 }

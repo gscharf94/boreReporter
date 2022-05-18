@@ -43,9 +43,9 @@ function getWeeklyTotals() {
       continue;
     }
     if (bore.rock) {
-      totals.rock += bore.footage;
+      totals.rock += Number(bore.footage);
     } else {
-      totals.bore += bore.footage;
+      totals.bore += Number(bore.footage);
     }
   }
 
@@ -85,12 +85,15 @@ function getWeeklyTotals() {
 }
 
 function generateTotalsPopup(totals) {
-  let text = ""
-  text += (totals.bore !== 0) ? `A1=   ${totals.bore}'<img style="totalsPopupImage" src="/images/icons/a1.png"><br>` : ``;
-  text += (totals.rock !== 0) ? `I9=   ${totals.rock}'<br>` : ``;
-  text += (totals.dt20 !== 0) ? `DT20= ${totals.dt20}<br>` : ``;
-  text += (totals.dt30 !== 0) ? `DT30= ${totals.dt30}<br>` : ``;
-  text += (totals.dt36 !== 0) ? `DT36= ${totals.dt36}<br>` : ``;
+  let row = 1;
+  console.log(`generating totals`);
+  console.log(totals);
+  let html = ""
+  html += (totals.bore !== 0) ? `<p class="totalsHeader" style="grid-row: ${row}; grid-column: 1">A1=&nbsp;&nbsp;&nbsp;&nbsp;</p><p class="totalsValue" style="grid-row: ${row}; grid-column: 2;">${totals.bore}'</p><img class="totalsBoreImage" style="grid-row: ${row++}; grid-column: 3" src="/images/icons/a1.png">` : ``;
+  html += (totals.rock !== 0) ? `<p class="totalsHeader" style="grid-row: ${row}; grid-column: 1">I9=&nbsp;&nbsp;&nbsp;&nbsp;</p><p class="totalsValue" style="grid-row: ${row}; grid-column: 2;">${totals.rock}'</p><img class="totalsBoreImage" style="grid-row: ${row++}; grid-column: 3" src="/images/icons/i9.png">` : ``;
+  html += (totals.dt20 !== 0) ? `<p class="totalsHeader" style="grid-row: ${row}; grid-column: 1">DT20=&nbsp;&nbsp;</p><p class="totalsValue style="grid-row: ${row}; grid-column: 2;"">${totals.dt20}&nbsp;</p><img class="totalsVaultImage" style="grid-row: ${row++}; grid-column: 3" src="/images/icons/DT20.png">` : ``;
+  html += (totals.dt30 !== 0) ? `<p class="totalsHeader" style="grid-row: ${row}; grid-column: 1">DT30=&nbsp;&nbsp;</p><p class="totalsValue style="grid-row: ${row}; grid-column: 2;"">${totals.dt30}&nbsp;</p><img class="totalsVaultImage" style="grid-row: ${row++}; grid-column: 3" src="/images/icons/DT30.png">` : ``;
+  html += (totals.dt36 !== 0) ? `<p class="totalsHeader" style="grid-row: ${row}; grid-column: 1">DT36=&nbsp;&nbsp;</p><p class="totalsValue style="grid-row: ${row}; grid-column: 2;"">${totals.dt36}&nbsp;</p><img class="totalsVaultImage" style="grid-row: ${row++}; grid-column: 3" src="/images/icons/DT36.png">` : ``;
   let popup = L.popup({
     closeButton: false,
     className: 'totalsPopup',
@@ -99,7 +102,7 @@ function generateTotalsPopup(totals) {
     closeOnClick: false,
   })
     .setLatLng([0, 0])
-    .setContent(`<p class="totalsText">${text}</p>`)
+    .setContent(`<div class="totalsContainer" style="display: grid;">${html}</div>`)
     .openOn(map);
   stylePopups();
   makeDraggable(popup);
