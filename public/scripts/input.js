@@ -26,6 +26,8 @@ L.tileLayer('http://192.168.86.36:3000/images/{job}/{page}/{z}/{x}/{y}.jpg', {
   noWrap: true,
 }).addTo(map);
 
+L.simpleMapScreenshoter().addTo(map);
+
 map.attributionControl.setPrefix(false);
 
 let dt20Icon = L.icon({
