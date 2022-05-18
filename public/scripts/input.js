@@ -28,6 +28,94 @@ L.tileLayer('http://192.168.86.36:3000/images/{job}/{page}/{z}/{x}/{y}.jpg', {
 
 L.simpleMapScreenshoter().addTo(map);
 
+function getWeeklyTotals() {
+  let totals = {
+    bore: 0,
+    rock: 0,
+    dt20: 0,
+    dt30: 0,
+    dt36: 0,
+  };
+
+  let bores = [...savedBores, ...postedBores, ...savedRocks];
+  for (const bore of bores) {
+    if (olderThanMonday(bore.work_date)) {
+      continue;
+    }
+    if (bore.rock) {
+      totals.rock += bore.footage;
+    } else {
+      totals.bore += bore.footage;
+    }
+  }
+
+  for (const vault of savedVaults) {
+    if (olderThanMonday(vault.work_date)) {
+      continue;
+    }
+
+    if (vault.vault_size == 0) {
+      totals.dt20 += 1;
+    } else if (vault.vault_size == 1) {
+      totals.dt30 += 1;
+    } else if (vault.vault_size == 2) {
+      totals.dt36 += 1;
+    } else {
+      console.log('something weird going on... getWeeklyTotals()');
+    }
+  }
+
+  for (const vault of postedVaults) {
+    if (olderThanMonday(vault.workDate)) {
+      continue;
+    }
+
+    if (vault.size == "DT20") {
+      totals.dt20 += 1;
+    } else if (vault.size == "DT30") {
+      totals.dt30 += 1;
+    } else if (vault.size == "DT36") {
+      totals.dt36 += 1;
+    } else {
+      console.log('something weird going on... getWeeklyTotals()');
+    }
+  }
+
+  return totals;
+}
+
+function generateTotalsPopup(totals) {
+  let text = ""
+  text += (totals.bore !== 0) ? `A1=   ${totals.bore}'<img style="totalsPopupImage" src="/images/icons/a1.png"><br>` : ``;
+  text += (totals.rock !== 0) ? `I9=   ${totals.rock}'<br>` : ``;
+  text += (totals.dt20 !== 0) ? `DT20= ${totals.dt20}<br>` : ``;
+  text += (totals.dt30 !== 0) ? `DT30= ${totals.dt30}<br>` : ``;
+  text += (totals.dt36 !== 0) ? `DT36= ${totals.dt36}<br>` : ``;
+  let popup = L.popup({
+    closeButton: false,
+    className: 'totalsPopup',
+    autoClose: false,
+    autoPan: false,
+    closeOnClick: false,
+  })
+    .setLatLng([0, 0])
+    .setContent(`<p class="totalsText">${text}</p>`)
+    .openOn(map);
+  stylePopups();
+  makeDraggable(popup);
+}
+
+function olderThanMonday(date) {
+  date = new Date(date);
+  date.setHours(0, 0, 0, 0);
+
+  if (date.valueOf() < getMonday().valueOf()) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 function getMonday() {
   let currentDate = new Date();
   currentDate.setHours(0, 0, 0, 0);
@@ -49,6 +137,7 @@ function hideOldBores() {
     let date = new Date(bore.work_date);
     if (date.valueOf() < getMonday().valueOf()) {
       map.removeLayer(bore.line);
+      bore.hidden = true;
     }
   }
 }
@@ -59,6 +148,7 @@ function hideOldVaults() {
     let date = new Date(vault.work_date);
     if (date.valueOf() < getMonday().valueOf()) {
       map.removeLayer(vault.marker);
+      vault.hidden = true;
     }
   }
 }
@@ -94,12 +184,13 @@ function getAveragePoint(points) {
 }
 
 function generateBoreLabels() {
-  let bores = [...savedBores, ...postedBores];
+  let bores = [...savedBores, ...postedBores, ...savedRocks];
   for (const bore of bores) {
-    console.log(bore);
-    let latLng = getAveragePoint(bore.line._latlngs);
-    latLng = [latLng.lat, latLng.lng];
-    bore.boreLabel = createPopup(bore.footage, latLng);
+    if (!bore.hidden) {
+      let latLng = getAveragePoint(bore.line._latlngs);
+      latLng = [latLng.lat, latLng.lng];
+      bore.boreLabel = createPopup(bore.footage, latLng);
+    }
   }
 }
 
@@ -207,6 +298,11 @@ function stylePopups() {
     ele.style.padding = "3px";
     ele.style.width = "fit-content";
   }
+  let totalsPopup = document.querySelector('.totalsPopup>.leaflet-popup-content-wrapper>.leaflet-popup-content');
+  if (totalsPopup) {
+    totalsPopup.style.width = "fit-content";
+  }
+
 }
 
 function deleteSavedVault(id) {
@@ -313,11 +409,13 @@ function toggleVaultVisibility() {
   if (!currentlyHidingVaults) {
     for (const vault of vaults) {
       map.removeLayer(vault.marker);
+      vault.hidden = true;
     }
     currentlyHidingVaults = true;
   } else {
     for (const vault of vaults) {
       vault.marker.addTo(map);
+      vault.hidden = false;
     }
     currentlyHidingVaults = false;
   }
@@ -328,11 +426,13 @@ function toggleBoreVisibility() {
   if (!currentlyHidingBores) {
     for (const bore of bores) {
       map.removeLayer(bore.line);
+      bore.hidden = true;
     }
     currentlyHidingBores = true;
   } else {
     for (const bore of bores) {
       bore.line.addTo(map);
+      bore.hidden = false;
     }
     currentlyHidingBores = false;
   }
@@ -602,6 +702,7 @@ function finishPlacing() {
         size: trans[typeOfBox],
         marker: currentMarker,
         workDate: getDateInput(),
+        hidden: false,
       };
       let pos = [vault.position.lat, vault.position.lng];
       currentMarker.bindPopup(generateVaultPopupHTML(getDateInput(), crewName, typeOfBox, -1, pos));
@@ -647,6 +748,7 @@ function finishPlacing() {
         line: currentLine,
         id: -1,
         workDate: getDateInput(),
+        hidden: false,
       };
       submittedBores.push(bore);
       for (const marker of currentLineMarkers) {
@@ -785,6 +887,7 @@ function sendPost() {
       pageNumber: pageId,
       marker: vault.marker,
       workDate: vault.workDate,
+      hidden: false,
     };
     let reqObj = { ...postObj }
     sendRequest(reqObj, "inputData");
@@ -802,6 +905,8 @@ function sendPost() {
       boreType: bore.boreType,
       line: bore.line,
       workDate: bore.workDate,
+      rock: (bore.boreType == "rock") ? true : false,
+      hidden: false,
     }
     let reqObj = { ...postObj };
     sendRequest(reqObj, "inputData");

@@ -20,6 +20,10 @@ router.get('/:jobName/:pageId', (req, res, next) => {
       , (err, resp2) => {
 
         let bores = resp2.rows;
+        for (const bore of bores) {
+          bore.rock = false;
+          bore.hidden = false;
+        }
         pool.query(
           `SELECT vaults.id, vaults.crew_name, vaults.vault_size, vaults.job_name, vaults.page_id, vaults.position, vaults.work_date, pages.page_number FROM vaults
           INNER JOIN pages on vaults.job_name=pages.job_name AND vaults.page_id=pages.id
@@ -27,6 +31,9 @@ router.get('/:jobName/:pageId', (req, res, next) => {
           AND vaults.job_name='${jobName}';`
           , (err, resp3) => {
             let vaults = resp3.rows;
+            for (const vault of vaults) {
+              vault.hidden = false;
+            }
             pool.query(
               `SELECT rocks.id, rocks.footage, rocks.crew_name, rocks.job_name, rocks.page_id, rocks.position, rocks.work_date, pages.page_number FROM rocks
               INNER JOIN pages ON rocks.job_name=pages.job_name AND rocks.page_id=pages.id
@@ -34,6 +41,10 @@ router.get('/:jobName/:pageId', (req, res, next) => {
               AND rocks.job_name='${jobName}';`
               , (err, resp4) => {
                 let rocks = resp4.rows;
+                for (const rock of rocks) {
+                  rock.rock = true;
+                  rock.hidden = false;
+                }
                 console.log(bores);
                 res.render('input',
                   {

@@ -173,3 +173,9 @@ button {
   padding: 0px;
   cursor: pointer;
 }
+
+.totalsText {
+  font-size: 3ch;
+  font-weight: bold;
+  width: fit-content;
+}
