@@ -89,11 +89,23 @@ function generateTotalsPopup(totals) {
   console.log(`generating totals`);
   console.log(totals);
   let html = ""
+  html += `<p class="totalsHeader" style="grid-row: ${row++}; grid-column: 1 / span 3; text-align: center;">SH${pageId}</p>`;
   html += (totals.bore !== 0) ? `<p class="totalsHeader" style="grid-row: ${row}; grid-column: 1">A1=&nbsp;&nbsp;&nbsp;&nbsp;</p><p class="totalsValue" style="grid-row: ${row}; grid-column: 2;">${totals.bore}'</p><img class="totalsBoreImage" style="grid-row: ${row++}; grid-column: 3" src="/images/icons/a1.png">` : ``;
   html += (totals.rock !== 0) ? `<p class="totalsHeader" style="grid-row: ${row}; grid-column: 1">I9=&nbsp;&nbsp;&nbsp;&nbsp;</p><p class="totalsValue" style="grid-row: ${row}; grid-column: 2;">${totals.rock}'</p><img class="totalsBoreImage" style="grid-row: ${row++}; grid-column: 3" src="/images/icons/i9.png">` : ``;
   html += (totals.dt20 !== 0) ? `<p class="totalsHeader" style="grid-row: ${row}; grid-column: 1">DT20=&nbsp;&nbsp;</p><p class="totalsValue style="grid-row: ${row}; grid-column: 2;"">${totals.dt20}&nbsp;</p><img class="totalsVaultImage" style="grid-row: ${row++}; grid-column: 3" src="/images/icons/DT20.png">` : ``;
   html += (totals.dt30 !== 0) ? `<p class="totalsHeader" style="grid-row: ${row}; grid-column: 1">DT30=&nbsp;&nbsp;</p><p class="totalsValue style="grid-row: ${row}; grid-column: 2;"">${totals.dt30}&nbsp;</p><img class="totalsVaultImage" style="grid-row: ${row++}; grid-column: 3" src="/images/icons/DT30.png">` : ``;
   html += (totals.dt36 !== 0) ? `<p class="totalsHeader" style="grid-row: ${row}; grid-column: 1">DT36=&nbsp;&nbsp;</p><p class="totalsValue style="grid-row: ${row}; grid-column: 2;"">${totals.dt36}&nbsp;</p><img class="totalsVaultImage" style="grid-row: ${row++}; grid-column: 3" src="/images/icons/DT36.png">` : ``;
+  let monday = getMonday();
+  let day = String(monday.getDate()).padStart(2, "0");
+  let month = String(monday.getMonth() + 1).padStart(2, "0");
+  let year = monday.getFullYear();
+  let mondayDateStr = `${month}-${day}-${year}`;
+  monday.setDate(monday.getDate() + 5);
+  day = String(monday.getDate()).padStart(2, "0");
+  month = String(monday.getMonth() + 1).padStart(2, "0");
+  year = monday.getFullYear();
+  let saturdayDateStr = `${month}-${day}-${year}`;
+  html += `<p class="totalsHeader" style="grid-row: ${row++}; grid-column: 1 / span 3;">${mondayDateStr} -> ${saturdayDateStr}</p>`
   let popup = L.popup({
     closeButton: false,
     className: 'totalsPopup',
