@@ -139,3 +139,37 @@ button {
   color: white;
   background-color: #0a0a61;
 }
+
+.asBuiltPopup {
+  background-color: yellow;
+}
+
+.asBuiltPopup>.leaflet-popup-tip-container {
+  display: none;
+}
+
+.asBuiltPopup>.leaflet-popup-content-wrapper {
+  background-color: yellow;
+  margin: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
+.asBuiltNumberHeader {
+  padding: 0px;
+  margin: 0px;
+  font-weight: bold;
+  font-size: 2ch;
+  text-align: center;
+}
+
+.asBuiltPopup>.leaflet-popup-content-wrapper>.leaflet-popup-content {
+  width: fit-content;
+  margin: 0;
+}
+
+.leaflet-popup-content p {
+  margin: 0px;
+  padding: 0px;
+  cursor: pointer;
+}

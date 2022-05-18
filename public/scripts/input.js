@@ -28,6 +28,26 @@ L.tileLayer('http://192.168.86.36:3000/images/{job}/{page}/{z}/{x}/{y}.jpg', {
 
 L.simpleMapScreenshoter().addTo(map);
 
+let popup = L.popup({
+  closeButton: false,
+  className: 'asBuiltPopup',
+  autoClose: false,
+}).setLatLng([65, -46]).setContent('<p class="asBuiltNumberHeader">356\'</p>').openOn(map);
+stylePopups();
+makeDraggable(popup);
+
+function makeDraggable(popup) {
+  let pos = map.latLngToLayerPoint(popup.getLatLng());
+  L.DomUtil.setPosition(popup._wrapper.parentNode, pos);
+  let draggable = new L.Draggable(popup._container, popup._wrapper);
+  draggable.enable();
+
+  draggable.on('dragend', function () {
+    let pos = map.layerPointToLatLng(this._newPos);
+    popup.setLatLng(pos);
+  });
+}
+
 map.attributionControl.setPrefix(false);
 
 let dt20Icon = L.icon({
@@ -112,6 +132,14 @@ function formatDate(dateStr) {
   let year = date.getFullYear();
 
   return `${month}/${day}/${year}`;
+}
+
+function stylePopups() {
+  let popups = document.querySelectorAll('.asBuiltPopup>.leaflet-popup-content-wrapper>.leaflet-popup-content');
+  for (const ele of popups) {
+    ele.style.padding = "3px";
+    ele.style.width = "fit-content";
+  }
 }
 
 function deleteSavedVault(id) {
