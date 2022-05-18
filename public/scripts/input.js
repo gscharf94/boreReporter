@@ -28,6 +28,41 @@ L.tileLayer('http://192.168.86.36:3000/images/{job}/{page}/{z}/{x}/{y}.jpg', {
 
 L.simpleMapScreenshoter().addTo(map);
 
+function getMonday() {
+  let currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0);
+  let originalWeekday = currentDate.getDay();
+  let currentDay = currentDate.getDate();
+  let currentWeekday = currentDate.getDay();
+
+  let delta = currentWeekday - 1;
+  currentDate.setDate(currentDay - delta);
+  if (originalWeekday == 0) {
+    currentDate.setDate(currentDate.getDate() - 7);
+  }
+  return currentDate;
+}
+
+function hideOldBores() {
+  let bores = [...savedBores, ...postedBores];
+  for (const bore of bores) {
+    let date = new Date(bore.work_date);
+    if (date.valueOf() < getMonday().valueOf()) {
+      map.removeLayer(bore.line);
+    }
+  }
+}
+
+function hideOldVaults() {
+  let vaults = [...savedVaults, ...postedVaults];
+  for (const vault of vaults) {
+    let date = new Date(vault.work_date);
+    if (date.valueOf() < getMonday().valueOf()) {
+      map.removeLayer(vault.marker);
+    }
+  }
+}
+
 function createPopup(footage, latLng) {
   let popup = L.popup({
     closeButton: false,
