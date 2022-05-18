@@ -79,6 +79,9 @@ let submittedRock = [];
 let postedBores = [];
 let postedVaults = [];
 
+let currentlyHidingVaults = false;
+let currentlyHidingBores = false;
+
 let trans = {
   0: 'DT20',
   1: 'DT30',
@@ -208,6 +211,36 @@ function deleteSavedBore(id, rock) {
 
   let reqObj = { ...obj }
   sendRequest(reqObj, "deleteData");
+}
+
+function toggleVaultVisibility() {
+  let vaults = [...savedVaults, ...postedVaults];
+  if (!currentlyHidingVaults) {
+    for (const vault of vaults) {
+      map.removeLayer(vault.marker);
+    }
+    currentlyHidingVaults = true;
+  } else {
+    for (const vault of vaults) {
+      vault.marker.addTo(map);
+    }
+    currentlyHidingVaults = false;
+  }
+}
+
+function toggleBoreVisibility() {
+  let bores = [...savedBores, ...postedBores];
+  if (!currentlyHidingBores) {
+    for (const bore of bores) {
+      map.removeLayer(bore.line);
+    }
+    currentlyHidingBores = true;
+  } else {
+    for (const bore of bores) {
+      bore.line.addTo(map);
+    }
+    currentlyHidingBores = false;
+  }
 }
 
 function deleteVault(workDate, crewName, vaultSize, position) {
