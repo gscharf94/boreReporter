@@ -148,6 +148,17 @@ button {
   display: none;
 }
 
+.totalsPopup>.leaflet-popup-tip-container {
+  display: none;
+}
+
+.totalsPopup>.leaflet-popup-content-wrapper {
+  background-color: white;
+  box-shadow: none;
+  border-radius: 0px;
+  border: 10px solid red;
+}
+
 .asBuiltPopup>.leaflet-popup-content-wrapper {
   background-color: yellow;
   margin: 0;
