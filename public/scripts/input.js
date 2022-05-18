@@ -28,13 +28,45 @@ L.tileLayer('http://192.168.86.36:3000/images/{job}/{page}/{z}/{x}/{y}.jpg', {
 
 L.simpleMapScreenshoter().addTo(map);
 
-let popup = L.popup({
-  closeButton: false,
-  className: 'asBuiltPopup',
-  autoClose: false,
-}).setLatLng([65, -46]).setContent('<p class="asBuiltNumberHeader">356\'</p>').openOn(map);
-stylePopups();
-makeDraggable(popup);
+function createPopup(footage, latLng) {
+  let popup = L.popup({
+    closeButton: false,
+    className: 'asBuiltPopup',
+    autoClose: false,
+    autoPan: false,
+    closeOnClick: false,
+  })
+    .setLatLng(latLng)
+    .setContent(`<p class="asBuiltNumberHeader">${footage}'</p>`)
+    .openOn(map);
+  stylePopups();
+  makeDraggable(popup);
+  return popup;
+}
+
+function getAveragePoint(points) {
+  let totals = points.reduce((prev, curr) => {
+    return {
+      lat: prev.lat + curr.lat,
+      lng: prev.lng + curr.lng,
+    }
+  });
+
+  return {
+    lat: totals.lat / points.length,
+    lng: totals.lng / points.length,
+  };
+}
+
+function generateBoreLabels() {
+  let bores = [...savedBores, ...postedBores];
+  for (const bore of bores) {
+    console.log(bore);
+    let latLng = getAveragePoint(bore.line._latlngs);
+    latLng = [latLng.lat, latLng.lng];
+    bore.boreLabel = createPopup(bore.footage, latLng);
+  }
+}
 
 function makeDraggable(popup) {
   let pos = map.latLngToLayerPoint(popup.getLatLng());
