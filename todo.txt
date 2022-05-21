@@ -25,8 +25,8 @@ maybe crop map so there isn't empty space
 05-12
 ________
 
-- change so it's public/prints/${jobName}_prints.pdf instead of /public/prints/${jobName}/prints.pdf
-  this way the file name has the job name and is more clear
+-̶ ̶c̶h̶a̶n̶g̶e̶ ̶s̶o̶ ̶i̶t̶'̶s̶ ̶p̶u̶b̶l̶i̶c̶/̶p̶r̶i̶n̶t̶s̶/̶$̶{̶j̶o̶b̶N̶a̶m̶e̶}̶_̶p̶r̶i̶n̶t̶s̶.̶p̶d̶f̶ ̶i̶n̶s̶t̶e̶a̶d̶ ̶o̶f̶ ̶/̶p̶u̶b̶l̶i̶c̶/̶p̶r̶i̶n̶t̶s̶/̶$̶{̶j̶o̶b̶N̶a̶m̶e̶}̶/̶p̶r̶i̶n̶t̶s̶.̶p̶d̶f̶
+̶ ̶ ̶t̶h̶i̶s̶ ̶w̶a̶y̶ ̶t̶h̶e̶ ̶f̶i̶l̶e̶ ̶n̶a̶m̶e̶ ̶h̶a̶s̶ ̶t̶h̶e̶ ̶j̶o̶b̶ ̶n̶a̶m̶e̶ ̶a̶n̶d̶ ̶i̶s̶ ̶m̶o̶r̶e̶ ̶c̶l̶e̶a̶r̶
 
 -̶ ̶a̶d̶d̶ ̶"̶t̶h̶i̶s̶ ̶w̶e̶e̶k̶'̶s̶ ̶p̶r̶o̶d̶u̶c̶t̶i̶o̶n̶"̶ ̶t̶o̶ ̶m̶a̶i̶n̶ ̶p̶a̶g̶e̶
 
@@ -49,3 +49,9 @@ ________
 -̶ ̶a̶d̶d̶ ̶d̶a̶t̶e̶ ̶s̶e̶l̶e̶c̶t̶o̶r̶ ̶t̶o̶ ̶i̶n̶p̶u̶t̶ ̶s̶o̶ ̶t̶h̶a̶t̶ ̶p̶e̶o̶p̶l̶e̶ ̶c̶a̶n̶ ̶i̶n̶p̶u̶t̶ ̶t̶h̶i̶n̶g̶s̶ ̶f̶r̶o̶m̶ ̶p̶r̶e̶v̶i̶o̶u̶s̶ ̶d̶a̶y̶s̶
 
 -̶ ̶i̶n̶c̶r̶e̶a̶s̶e̶ ̶t̶o̶l̶e̶r̶a̶n̶c̶e̶ ̶t̶o̶ ̶m̶a̶k̶e̶ ̶i̶t̶ ̶e̶a̶s̶i̶e̶r̶ ̶t̶o̶ ̶c̶l̶i̶c̶k̶ ̶o̶n̶ ̶m̶o̶b̶i̶l̶e̶
+
+
+05-18
+_______
+
+maybe have a way to view locates?
