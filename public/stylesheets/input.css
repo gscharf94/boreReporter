@@ -168,7 +168,6 @@ button {
 
 .rockPopup {
   background-color: orange;
-  border-radius: 10px;
 }
 
 .rockPopup>.leaflet-popup-content-wrapper {
