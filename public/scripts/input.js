@@ -28,6 +28,146 @@ L.tileLayer('http://fiber1report.com/images/{job}/{page}/{z}/{x}/{y}.jpg', {
 
 L.simpleMapScreenshoter().addTo(map);
 
+function getWeeklyTotals() {
+  let totals = {
+    bore: 0,
+    rock: 0,
+    dt20: 0,
+    dt30: 0,
+    dt36: 0,
+  };
+
+  let bores = [...savedBores, ...postedBores, ...savedRocks];
+  for (const bore of bores) {
+    if (olderThanMonday(bore.work_date)) {
+      continue;
+    }
+    if (bore.rock) {
+      totals.rock += Number(bore.footage);
+    } else {
+      totals.bore += Number(bore.footage);
+    }
+  }
+
+  for (const vault of savedVaults) {
+    if (olderThanMonday(vault.work_date)) {
+      continue;
+    }
+
+    if (vault.vault_size == 0) {
+      totals.dt20 += 1;
+    } else if (vault.vault_size == 1) {
+      totals.dt30 += 1;
+    } else if (vault.vault_size == 2) {
+      totals.dt36 += 1;
+    } else {
+      console.log('something weird going on... getWeeklyTotals()');
+    }
+  }
+
+  for (const vault of postedVaults) {
+    if (olderThanMonday(vault.workDate)) {
+      continue;
+    }
+
+    if (vault.size == "DT20") {
+      totals.dt20 += 1;
+    } else if (vault.size == "DT30") {
+      totals.dt30 += 1;
+    } else if (vault.size == "DT36") {
+      totals.dt36 += 1;
+    } else {
+      console.log('something weird going on... getWeeklyTotals()');
+    }
+  }
+
+  return totals;
+}
+
+function generateTotalsPopup(totals) {
+  let row = 1;
+  console.log(`generating totals`);
+  console.log(totals);
+  let html = ""
+  html += `<p class="totalsHeader" style="grid-row: ${row++}; grid-column: 1 / span 3; text-align: center;">SH${pageId}</p>`;
+  html += (totals.bore !== 0) ? `<p class="totalsHeader" style="grid-row: ${row}; grid-column: 1">A1=&nbsp;&nbsp;&nbsp;&nbsp;</p><p class="totalsValue" style="grid-row: ${row}; grid-column: 2;">${totals.bore}'</p><img class="totalsBoreImage" style="grid-row: ${row++}; grid-column: 3" src="/images/icons/a1.png">` : ``;
+  html += (totals.rock !== 0) ? `<p class="totalsHeader" style="grid-row: ${row}; grid-column: 1">I9=&nbsp;&nbsp;&nbsp;&nbsp;</p><p class="totalsValue" style="grid-row: ${row}; grid-column: 2;">${totals.rock}'</p><img class="totalsBoreImage" style="grid-row: ${row++}; grid-column: 3" src="/images/icons/i9.png">` : ``;
+  html += (totals.dt20 !== 0) ? `<p class="totalsHeader" style="grid-row: ${row}; grid-column: 1">DT20=&nbsp;&nbsp;</p><p class="totalsValue style="grid-row: ${row}; grid-column: 2;"">${totals.dt20}&nbsp;</p><img class="totalsVaultImage" style="grid-row: ${row++}; grid-column: 3" src="/images/icons/DT20.png">` : ``;
+  html += (totals.dt30 !== 0) ? `<p class="totalsHeader" style="grid-row: ${row}; grid-column: 1">DT30=&nbsp;&nbsp;</p><p class="totalsValue style="grid-row: ${row}; grid-column: 2;"">${totals.dt30}&nbsp;</p><img class="totalsVaultImage" style="grid-row: ${row++}; grid-column: 3" src="/images/icons/DT30.png">` : ``;
+  html += (totals.dt36 !== 0) ? `<p class="totalsHeader" style="grid-row: ${row}; grid-column: 1">DT36=&nbsp;&nbsp;</p><p class="totalsValue style="grid-row: ${row}; grid-column: 2;"">${totals.dt36}&nbsp;</p><img class="totalsVaultImage" style="grid-row: ${row++}; grid-column: 3" src="/images/icons/DT36.png">` : ``;
+  let monday = getMonday();
+  let day = String(monday.getDate()).padStart(2, "0");
+  let month = String(monday.getMonth() + 1).padStart(2, "0");
+  let year = monday.getFullYear();
+  let mondayDateStr = `${month}-${day}-${year}`;
+  monday.setDate(monday.getDate() + 5);
+  day = String(monday.getDate()).padStart(2, "0");
+  month = String(monday.getMonth() + 1).padStart(2, "0");
+  year = monday.getFullYear();
+  let saturdayDateStr = `${month}-${day}-${year}`;
+  html += `<p class="totalsHeader" style="grid-row: ${row++}; grid-column: 1 / span 3;">${mondayDateStr} -> ${saturdayDateStr}</p>`
+  let popup = L.popup({
+    closeButton: false,
+    className: 'totalsPopup',
+    autoClose: false,
+    autoPan: false,
+    closeOnClick: false,
+  })
+    .setLatLng([0, 0])
+    .setContent(`<div class="totalsContainer" style="display: grid;">${html}</div>`)
+    .openOn(map);
+  stylePopups();
+  makeDraggable(popup);
+}
+
+function olderThanMonday(date) {
+  date = new Date(date);
+  date.setHours(0, 0, 0, 0);
+
+  if (date.valueOf() < getMonday().valueOf()) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function getMonday() {
+  let currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0);
+  let originalWeekday = currentDate.getDay();
+  let currentDay = currentDate.getDate();
+  let currentWeekday = currentDate.getDay();
+
+  let delta = currentWeekday - 1;
+  currentDate.setDate(currentDay - delta);
+  if (originalWeekday == 0) {
+    currentDate.setDate(currentDate.getDate() - 7);
+  }
+  return currentDate;
+}
+
+function hideOldBores() {
+  let bores = [...savedBores, ...postedBores];
+  for (const bore of bores) {
+    let date = new Date(bore.work_date);
+    if (date.valueOf() < getMonday().valueOf()) {
+      map.removeLayer(bore.line);
+      bore.hidden = true;
+    }
+  }
+}
+
+function hideOldVaults() {
+  let vaults = [...savedVaults, ...postedVaults];
+  for (const vault of vaults) {
+    let date = new Date(vault.work_date);
+    if (date.valueOf() < getMonday().valueOf()) {
+      map.removeLayer(vault.marker);
+      vault.hidden = true;
+    }
+  }
+}
+
 function createPopup(footage, latLng) {
   let popup = L.popup({
     closeButton: false,
@@ -59,12 +199,13 @@ function getAveragePoint(points) {
 }
 
 function generateBoreLabels() {
-  let bores = [...savedBores, ...postedBores];
+  let bores = [...savedBores, ...postedBores, ...savedRocks];
   for (const bore of bores) {
-    console.log(bore);
-    let latLng = getAveragePoint(bore.line._latlngs);
-    latLng = [latLng.lat, latLng.lng];
-    bore.boreLabel = createPopup(bore.footage, latLng);
+    if (!bore.hidden) {
+      let latLng = getAveragePoint(bore.line._latlngs);
+      latLng = [latLng.lat, latLng.lng];
+      bore.boreLabel = createPopup(bore.footage, latLng);
+    }
   }
 }
 
@@ -172,6 +313,11 @@ function stylePopups() {
     ele.style.padding = "3px";
     ele.style.width = "fit-content";
   }
+  let totalsPopup = document.querySelector('.totalsPopup>.leaflet-popup-content-wrapper>.leaflet-popup-content');
+  if (totalsPopup) {
+    totalsPopup.style.width = "fit-content";
+  }
+
 }
 
 function deleteSavedVault(id) {
@@ -278,11 +424,13 @@ function toggleVaultVisibility() {
   if (!currentlyHidingVaults) {
     for (const vault of vaults) {
       map.removeLayer(vault.marker);
+      vault.hidden = true;
     }
     currentlyHidingVaults = true;
   } else {
     for (const vault of vaults) {
       vault.marker.addTo(map);
+      vault.hidden = false;
     }
     currentlyHidingVaults = false;
   }
@@ -293,11 +441,13 @@ function toggleBoreVisibility() {
   if (!currentlyHidingBores) {
     for (const bore of bores) {
       map.removeLayer(bore.line);
+      bore.hidden = true;
     }
     currentlyHidingBores = true;
   } else {
     for (const bore of bores) {
       bore.line.addTo(map);
+      bore.hidden = false;
     }
     currentlyHidingBores = false;
   }
@@ -567,6 +717,7 @@ function finishPlacing() {
         size: trans[typeOfBox],
         marker: currentMarker,
         workDate: getDateInput(),
+        hidden: false,
       };
       let pos = [vault.position.lat, vault.position.lng];
       currentMarker.bindPopup(generateVaultPopupHTML(getDateInput(), crewName, typeOfBox, -1, pos));
@@ -612,6 +763,7 @@ function finishPlacing() {
         line: currentLine,
         id: -1,
         workDate: getDateInput(),
+        hidden: false,
       };
       submittedBores.push(bore);
       for (const marker of currentLineMarkers) {
@@ -750,6 +902,7 @@ function sendPost() {
       pageNumber: pageId,
       marker: vault.marker,
       workDate: vault.workDate,
+      hidden: false,
     };
     let reqObj = { ...postObj }
     sendRequest(reqObj, "inputData");
@@ -767,6 +920,8 @@ function sendPost() {
       boreType: bore.boreType,
       line: bore.line,
       workDate: bore.workDate,
+      rock: (bore.boreType == "rock") ? true : false,
+      hidden: false,
     }
     let reqObj = { ...postObj };
     sendRequest(reqObj, "inputData");
