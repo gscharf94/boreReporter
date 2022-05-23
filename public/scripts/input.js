@@ -147,7 +147,7 @@ function getMonday() {
 }
 
 function hideOldBores() {
-  let bores = [...savedBores, ...postedBores];
+  let bores = [...savedBores, ...postedBores, ...savedRocks];
   for (const bore of bores) {
     let date = new Date(bore.work_date);
     if (date.valueOf() < getMonday().valueOf()) {
