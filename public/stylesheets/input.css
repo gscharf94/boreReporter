@@ -166,6 +166,17 @@ button {
   box-shadow: none;
 }
 
+.rockPopup {
+  background-color: orange;
+}
+
+.rockPopup>.leaflet-popup-content-wrapper {
+  background-color: orange;
+  margin: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
 .asBuiltNumberHeader {
   padding: 0px;
   margin: 0px;

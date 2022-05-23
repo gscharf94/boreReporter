@@ -90,7 +90,7 @@ function generateTotalsPopup(totals) {
   console.log(totals);
   let html = ""
   html += `<p class="totalsHeader" style="grid-row: ${row++}; grid-column: 1 / span 3; text-align: center;">SH${pageId}</p>`;
-  html += (totals.bore !== 0) ? `<p class="totalsHeader" style="grid-row: ${row}; grid-column: 1">A1=&nbsp;&nbsp;&nbsp;&nbsp;</p><p class="totalsValue" style="grid-row: ${row}; grid-column: 2;">${totals.bore}'</p><img class="totalsBoreImage" style="grid-row: ${row++}; grid-column: 3" src="/images/icons/a1.png">` : ``;
+  html += (totals.bore !== 0) ? `<p class="totalsHeader" style="grid-row: ${row}; grid-column: 1">A1=&nbsp;&nbsp;&nbsp;&nbsp;</p><p class="totalsValue" style="grid-row: ${row}; grid-column: 2;">${totals.bore - totals.rock}'</p><img class="totalsBoreImage" style="grid-row: ${row++}; grid-column: 3" src="/images/icons/a1.png">` : ``;
   html += (totals.rock !== 0) ? `<p class="totalsHeader" style="grid-row: ${row}; grid-column: 1">I9=&nbsp;&nbsp;&nbsp;&nbsp;</p><p class="totalsValue" style="grid-row: ${row}; grid-column: 2;">${totals.rock}'</p><img class="totalsBoreImage" style="grid-row: ${row++}; grid-column: 3" src="/images/icons/i9.png">` : ``;
   html += (totals.dt20 !== 0) ? `<p class="totalsHeader" style="grid-row: ${row}; grid-column: 1">DT20=&nbsp;&nbsp;</p><p class="totalsValue style="grid-row: ${row}; grid-column: 2;"">${totals.dt20}&nbsp;</p><img class="totalsVaultImage" style="grid-row: ${row++}; grid-column: 3" src="/images/icons/DT20.png">` : ``;
   html += (totals.dt30 !== 0) ? `<p class="totalsHeader" style="grid-row: ${row}; grid-column: 1">DT30=&nbsp;&nbsp;</p><p class="totalsValue style="grid-row: ${row}; grid-column: 2;"">${totals.dt30}&nbsp;</p><img class="totalsVaultImage" style="grid-row: ${row++}; grid-column: 3" src="/images/icons/DT30.png">` : ``;
@@ -168,10 +168,10 @@ function hideOldVaults() {
   }
 }
 
-function createPopup(footage, latLng) {
+function createPopup(footage, latLng, rock) {
   let popup = L.popup({
     closeButton: false,
-    className: 'asBuiltPopup',
+    className: `asBuiltPopup ${(rock) ? "rockPopup" : ""}`,
     autoClose: false,
     autoPan: false,
     closeOnClick: false,
@@ -204,7 +204,11 @@ function generateBoreLabels() {
     if (!bore.hidden) {
       let latLng = getAveragePoint(bore.line._latlngs);
       latLng = [latLng.lat, latLng.lng];
-      bore.boreLabel = createPopup(bore.footage, latLng);
+      if (bore.rock) {
+        bore.boreLabel = createPopup(bore.footage, latLng, true);
+      } else {
+        bore.boreLabel = createPopup(bore.footage, latLng, false);
+      }
     }
   }
 }
