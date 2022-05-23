@@ -168,10 +168,10 @@ function hideOldVaults() {
   }
 }
 
-function createPopup(footage, latLng) {
+function createPopup(footage, latLng, rock) {
   let popup = L.popup({
     closeButton: false,
-    className: 'asBuiltPopup',
+    className: `asBuiltPopup ${(rock) ? "rockPopup" : ""}`,
     autoClose: false,
     autoPan: false,
     closeOnClick: false,
@@ -204,7 +204,11 @@ function generateBoreLabels() {
     if (!bore.hidden) {
       let latLng = getAveragePoint(bore.line._latlngs);
       latLng = [latLng.lat, latLng.lng];
-      bore.boreLabel = createPopup(bore.footage, latLng);
+      if (bore.rock) {
+        bore.boreLabel = createPopup(bore.footage, latLng, true);
+      } else {
+        bore.boreLabel = createPopup(bore.footage, latLng, false);
+      }
     }
   }
 }
