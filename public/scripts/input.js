@@ -146,6 +146,22 @@ function getMonday() {
   return currentDate;
 }
 
+function hideBoresDate(dateStr) {
+  let [month, day, year] = dateStr.split("-");
+  let comparisonDate = new Date(Number(year), Number(month) - 1, Number(day));
+  let bores = [...savedBores, ...postedBores, ...savedRocks];
+  console.log(`comparison date: ${comparisonDate}`);
+  for (const bore of bores) {
+    let date = new Date(bore.work_date);
+    console.log(`comparing: ${date}`);
+    if (date.valueOf() < comparisonDate.valueOf()) {
+      map.removeLayer(bore.line);
+      bore.hidden = true;
+    }
+  }
+}
+
+
 function hideOldBores() {
   let bores = [...savedBores, ...postedBores, ...savedRocks];
   for (const bore of bores) {
@@ -153,6 +169,19 @@ function hideOldBores() {
     if (date.valueOf() < getMonday().valueOf()) {
       map.removeLayer(bore.line);
       bore.hidden = true;
+    }
+  }
+}
+
+function hideVaultsDate(dateStr) {
+  let [month, day, year] = dateStr.split("-");
+  let comparisonDate = new Date(Number(year), Number(month) - 1, Number(day));
+  let vaults = [...savedVaults, ...postedVaults];
+  for (const vault of vaults) {
+    let date = new Date(vault.work_date);
+    if (date.valueOf() < comparisonDate.valueOf()) {
+      map.removeLayer(vault.marker);
+      vault.hidden = true;
     }
   }
 }
