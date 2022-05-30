@@ -28,6 +28,72 @@ L.tileLayer('http://fiber1report.com/images/{job}/{page}/{z}/{x}/{y}.jpg', {
 
 L.simpleMapScreenshoter().addTo(map);
 
+function getWeeklyTotalsDate(dateStr) {
+  let [month, day, year] = dateStr.split("-");
+  let comparisonDate = new Date(Number(year), Number(month) - 1, Number(day));
+
+  let totals = {
+    bore: 0,
+    rock: 0,
+    dt20: 0,
+    dt30: 0,
+    dt36: 0,
+  };
+
+  let bores = [...savedBores, ...postedBores, ...savedRocks];
+  for (const bore of bores) {
+    let boreDate = new Date(bore.work_date);
+    boreDate.setHours(0, 0, 0, 0);
+    if (boreDate.valueOf() < comparisonDate.valueOf()) {
+      continue;
+    }
+    if (bore.rock) {
+      totals.rock += Number(bore.footage);
+    } else {
+      totals.bore += Number(bore.footage);
+    }
+  }
+
+  for (const vault of savedVaults) {
+    let vaultDate = new Date(vault.work_date);
+    vaultDate.setHours(0, 0, 0, 0);
+    if (vaultDate.valueOf() < comparisonDate.valueOf()) {
+      continue;
+    }
+
+    if (vault.vault_size == 0) {
+      totals.dt20 += 1;
+    } else if (vault.vault_size == 1) {
+      totals.dt30 += 1;
+    } else if (vault.vault_size == 2) {
+      totals.dt36 += 1;
+    } else {
+      console.log('something weird going on... getWeeklyTotals()');
+    }
+  }
+
+  for (const vault of postedVaults) {
+    let vaultDate = new Date(vault.work_date);
+    vaultDate.setHours(0, 0, 0, 0);
+    if (vaultDate.valueOf() < comparisonDate.valueOf()) {
+      continue;
+    }
+
+    if (vault.size == "DT20") {
+      totals.dt20 += 1;
+    } else if (vault.size == "DT30") {
+      totals.dt30 += 1;
+    } else if (vault.size == "DT36") {
+      totals.dt36 += 1;
+    } else {
+      console.log('something weird going on... getWeeklyTotals()');
+    }
+  }
+
+  return totals;
+
+}
+
 function getWeeklyTotals() {
   let totals = {
     bore: 0,
